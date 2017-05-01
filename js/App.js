@@ -10,7 +10,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 
 import RunningInstances from './RunningInstances';
 import AllInstances from './AllInstances';
-
+import Toolbox from './Toolbox';
 
 
 class App extends Component {
@@ -35,7 +35,7 @@ class App extends Component {
           <Tabs activeKey={this.state.activeTab} onSelect={this.handleSelect} id="menu">
             <Tab id="running" eventKey={1} title="Running Instances"><RunningInstances /></Tab>
             <Tab id="all" eventKey={2} title="All Instances"><AllInstances /></Tab>
-            <Tab eventKey={3} title="Toolbox" id="toolbox">Toolbox</Tab>
+            <Tab id="toolbox" eventKey={3} title="Toolbox"><Toolbox /></Tab>
           </Tabs>
         </div>
       </div>
