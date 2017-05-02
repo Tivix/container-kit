@@ -1,6 +1,10 @@
-const {app, BrowserWindow} = require('electron')
+// main.js
+
+
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
 const url = require('url')
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -17,8 +21,9 @@ function createWindow () {
     slashes: true
   }))
 
-  // Open the DevTools.
-  win.webContents.openDevTools()
+  // Open the DevTools only if dev environment.
+  if(process.env.NODE_ENV === 'dev') win.webContents.openDevTools()
+
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -33,6 +38,10 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow)
+
+ipcMain.on('rm-image-error', (event) => {
+  dialog.showErrorBox('An Error Message', 'Demonstrating an error message.')
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

@@ -21,8 +21,9 @@ class Containers extends Component {
         self = this
 
     var docker = initialize()
-    docker.listContainers({all: this.props.listAll}, function(err, containers) {
-      containers.forEach(function(containerInfo) {
+
+    docker.listContainers({all: this.props.listAll}, (err, containers) => {
+      containers.forEach((containerInfo) => {
         var timeago = require('time-ago')()
         var newDate = timeago.ago(new Date(containerInfo.Created * 1000))
         var ports = formatPorts(containerInfo.Ports)
