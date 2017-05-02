@@ -1,9 +1,13 @@
+// Toolbox.js
+
+
+// import { ipcRenderer, dialog } from 'electron';
+
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
 import { Table, Button } from 'react-bootstrap';
 
-import { exec } from 'child_process';
+import bytes from 'bytes'
 
 import { initialize } from './scripts';
 
@@ -30,49 +34,68 @@ class Toolbox extends Component {
   render() {
     return (
       <div>
-        <h2>{this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h2>
+        <div>
+          Total image disk space:
+          <h2>{this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h2>
+        </div>
+
         <div className="well">
-          <Button onClick={this.removeAllImages} bsStyle="primary" bsSize="large" block>Remove All Images</Button>
+          <Button id="remove-images-btn" onClick={this.removeAllImages} bsStyle="primary" bsSize="large" block>Remove All Images</Button>
         </div>
       </div>
     )
   }
 
   removeAllImages() {
-    var docker = initialize();
-    docker.listImages({all: true}, function(err, images) {
-      images.forEach(function (imageInfo) {
-        docker.getImage(imageInfo.Id).remove();
-        console.log('removing image');
-      });
-    });
+    let docker = initialize(),
+        errStrArray = []
+
+    const removeImagesBtn = document.getElementById('remove-images-btn')
+    const dialog = require('electron').remote.dialog
+
+    docker.listImages({all: true}, (err, images) => {
+      images.forEach((imageInfo, idx, array) => {
+        docker.getImage(imageInfo.Id).remove((er, img) => {
+          if(er) {
+
+            let splitStr = er.toString().split('-'),
+                s = splitStr[splitStr.length - 1]
+
+            if(!errStrArray.includes(s)) errStrArray.push(s)
+
+            if(idx === array.length - 1) {
+              dialog.showErrorBox('Removing Images', errStrArray.join('\n\n'))
+            }
+          }
+        })
+      })
+    })
   }
 
   runToolbox() {
 
-    var docker = initialize();
-    var bytes = require('bytes');
-    var totalBytes = 0;
-    var self = this;
+    let docker = initialize(),
+        totalBytes = 0,
+        self = this
 
     docker.listImages({all: true})
-      .then(function(images) {
-        images.forEach(function (imageInfo) {
+      .then((images) => {
+        images.forEach((imageInfo) => {
           if (imageInfo.RepoTags && imageInfo.RepoTags.length > 0) console.log(imageInfo.RepoTags[0]);
           totalBytes = totalBytes + imageInfo.Size;
           console.log(imageInfo.Size);
-        });
+        })
 
         self.setState({
           total: bytes(totalBytes),
           errorMessage: '',
-        });
-      }, function(err) {
+        })
+      }, (err) => {
         self.setState({
           errorMessage: err.message,
-        });
-      });
+        })
+      })
   }
 }
 
-export default Toolbox;
+export default Toolbox
