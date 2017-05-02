@@ -33,7 +33,6 @@ class Toolbox extends Component {
         <h2>{this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h2>
         <div className="well">
           <Button onClick={this.removeAllImages} bsStyle="primary" bsSize="large" block>Remove All Images</Button>
-          <Button bsSize="large" block>Block level button</Button>
         </div>
       </div>
     )
