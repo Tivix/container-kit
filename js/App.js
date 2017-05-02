@@ -1,4 +1,5 @@
 require('../node_modules/bootstrap/less/bootstrap.less')
+require('../node_modules/font-awesome/less/font-awesome.less')
 require('../less/main.less')
 
 
@@ -6,7 +7,8 @@ require('../less/main.less')
 
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Tab, Tabs } from 'react-bootstrap'
+import { Tab, Tabs, Row, Col, Nav, NavItem } from 'react-bootstrap'
+import FontAwesome from 'react-fontawesome'
 
 import Containers from './Containers'
 import Toolbox from './Toolbox'
@@ -31,11 +33,36 @@ class App extends Component {
           <img src={'../imgs/logo.png'} />
         </div>
         <div className="container">
-          <Tabs activeKey={this.state.activeTab} onSelect={this.handleSelect} id="menu">
-            <Tab id="running" eventKey={1} title="Running Instances"><Containers listAll={false}/></Tab>
-            <Tab id="all" eventKey={2} title="All Instances"><Containers listAll={true}/></Tab>
-            <Tab id="toolbox" eventKey={3} title="Toolbox"><Toolbox /></Tab>
-          </Tabs>
+          <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+            <Row className="clearfix">
+              <Col sm={12}>
+                <Nav bsStyle="pills">
+                  <NavItem eventKey="first">
+                    <h4>Running Containers <FontAwesome name="ship" /></h4>
+                  </NavItem>
+                  <NavItem eventKey="second">
+                    <h4>All Containers <FontAwesome name="car" /></h4>
+                  </NavItem>
+                  <NavItem eventKey="third">
+                    <h4>Toolbox <FontAwesome name="info-circle" /></h4>
+                  </NavItem>
+                </Nav>
+              </Col>
+              <Col sm={12}>
+                <Tab.Content animation>
+                  <Tab.Pane eventKey="first">
+                    <Containers listAll={false}/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="second">
+                    <Containers listAll={true}/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="third">
+                    <Toolbox />
+                  </Tab.Pane>
+                </Tab.Content>
+              </Col>
+            </Row>
+          </Tab.Container>
         </div>
       </div>
     );
