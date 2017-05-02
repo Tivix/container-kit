@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-
-import { Table } from 'react-bootstrap'
+import {
+  Table,
+  TableBody,
+  TableFooter,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 
 import { initialize, formatPorts } from './scripts'
 
@@ -17,17 +24,16 @@ class Containers extends Component {
   }
 
   allContainers() {
-    var c = [],
-        self = this
-
-    var docker = initialize()
+    let c = [],
+        self = this,
+        docker = initialize()
 
     docker.listContainers({all: this.props.listAll}, (err, containers) => {
       containers.forEach((containerInfo) => {
-        var timeago = require('time-ago')()
-        var newDate = timeago.ago(new Date(containerInfo.Created * 1000))
-        var ports = formatPorts(containerInfo.Ports)
-        console.log(containerInfo)
+        let timeago = require('time-ago')(),
+            newDate = timeago.ago(new Date(containerInfo.Created * 1000)),
+            ports = formatPorts(containerInfo.Ports)
+
         c.push({
           id: containerInfo.Id.substring(0,11),
           image: containerInfo.Image,
@@ -44,7 +50,7 @@ class Containers extends Component {
 
   // change these two
   componentDidMount() {
-    var intervalId = setInterval(this.allContainers, 2000)
+    let intervalId = setInterval(this.allContainers, 2000)
     this.setState({intervalId: intervalId})
   }
 
@@ -54,52 +60,35 @@ class Containers extends Component {
 
   render() {
     return (
-      <div className="table-responsive">
-        <Table responsive>
-          <thead>
-            <tr id="headerRowAll">
-              <th>
-                <span>
-                  CONTAINER ID
-                </span>
-              </th>
-              <th>
-                <span>
-                  IMAGE
-                </span>
-              </th>
-              <th>
-                <span>
-                  COMMAND
-                </span>
-              </th>
-              <th>
-                <span>
-                  CREATED
-                </span>
-              </th>
-              <th>
-                <span>
-                  STATUS
-                </span>
-              </th>
-              {this.props.listAll ? '' : <th><span>PORTS</span></th>}
-            </tr>
-          </thead>
-          <tbody>
+      <div>
+        <Table>
+          <TableHeader
+            displaySelectAll={false}
+            adjustForCheckbox={false}
+            enableSelectAll={false}>
+            <TableRow>
+              <TableHeaderColumn>CONTAINER ID</TableHeaderColumn>
+              <TableHeaderColumn>IMAGE</TableHeaderColumn>
+              <TableHeaderColumn>COMMAND</TableHeaderColumn>
+              <TableHeaderColumn>CREATED</TableHeaderColumn>
+              <TableHeaderColumn>STATUS</TableHeaderColumn>
+              {this.props.listAll ? '' : <TableHeaderColumn>PORTS</TableHeaderColumn>}
+            </TableRow>
+          </TableHeader>
+          <TableBody displayRowCheckbox={false}>
             {
-              this.state.containers.map((container, i) => (
-                <tr>
-                  <td>{container.id}</td>
-                  <td>{container.image}</td>
-                  <td>{container.command}</td>
-                  <td>{container.created}</td>
-                  <td>{container.status}</td>
-                  {this.props.listAll ? '' : <td>{container.ports}</td>}
-                </tr>
+              this.state.containers.map( (container, index) => (
+                <TableRow key={index}>
+                  <TableRowColumn>{container.id}</TableRowColumn>
+                  <TableRowColumn>{container.image}</TableRowColumn>
+                  <TableRowColumn>{container.command}</TableRowColumn>
+                  <TableRowColumn>{container.created}</TableRowColumn>
+                  <TableRowColumn>{container.status}</TableRowColumn>
+                  {this.props.listAll ? '' : <TableRowColumn>{container.ports}</TableRowColumn>}
+                </TableRow>
               ))
             }
-          </tbody>
+          </TableBody>
         </Table>
       </div>
     );
