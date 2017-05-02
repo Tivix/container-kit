@@ -20,6 +20,7 @@ class Toolbox extends Component {
     this.state = {
       total: '0 bytes',
       errorMessage: '',
+      imageArray: []
     };
 
     this.runToolbox = this.runToolbox.bind(this);
@@ -34,6 +35,46 @@ class Toolbox extends Component {
   render() {
     return (
       <div>
+        <div className="table-responsive">
+          <Table responsive>
+            <thead>
+              <tr id="headerRow">
+                <th>
+                  <span>
+                    REPO:TAG
+                  </span>
+                </th>
+                <th>
+                  <span>
+                    IMAGE ID
+                  </span>
+                </th>
+                <th>
+                  <span>
+                    CREATED
+                  </span>
+                </th>
+                <th>
+                  <span>
+                    SIZE
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                this.state.imageArray.map((image, i) => (
+                  <tr>
+                    <td>{image.id}</td>
+                    <td>{image.imageTag}</td>
+                    <td>{image.size}</td>
+                    <td>{image.created}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </Table>
+        </div>
         <div>
           Total image disk space:
           <h2>{this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h2>
@@ -48,7 +89,12 @@ class Toolbox extends Component {
 
   removeAllImages() {
     let docker = initialize(),
-        errStrArray = []
+        errStrArray = [],
+        messageOptions = {
+          title: "errr",
+          type: "warning",
+          buttons: ['Stop/Remove', 'Cancel']
+        }
 
     const removeImagesBtn = document.getElementById('remove-images-btn')
     const dialog = require('electron').remote.dialog
@@ -64,7 +110,8 @@ class Toolbox extends Component {
             if(!errStrArray.includes(s)) errStrArray.push(s)
 
             if(idx === array.length - 1) {
-              dialog.showErrorBox('Removing Images', errStrArray.join('\n\n'))
+              //dialog.showMessageBox('Removing Images', errStrArray.join('\n\n'))
+              dialog.showMessageBox(messageOptions, () => { })
             }
           }
         })
@@ -75,13 +122,27 @@ class Toolbox extends Component {
   runToolbox() {
 
     let docker = initialize(),
+        imageArray = [],
         totalBytes = 0,
         self = this
 
     docker.listImages({all: true})
       .then((images) => {
         images.forEach((imageInfo) => {
-          if (imageInfo.RepoTags && imageInfo.RepoTags.length > 0) console.log(imageInfo.RepoTags[0]);
+          if (imageInfo.RepoTags && imageInfo.RepoTags.length > 0 && imageInfo.RepoTags[0].toString() !== '<none>:<none>') {
+            console.log(imageInfo)
+            let ta = require('time-ago')(),
+                newDate = ta.ago(new Date(imageInfo.Created * 1000))
+
+            imageArray.push({
+              created: newDate,
+              imageTag: imageInfo.RepoTags[0],
+              size: bytes(imageInfo.Size),
+              id: imageInfo.Id.split(':')[1].substring(0,11)
+            })
+
+            self.setState({imageArray:imageArray})
+          }
           totalBytes = totalBytes + imageInfo.Size;
           console.log(imageInfo.Size);
         })

@@ -1,0 +1,48 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/nickkelly/.nvm/versions/node/v6.4.0/bin/node',
+1 verbose cli   '/Users/nickkelly/.nvm/versions/node/v6.4.0/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'watch' ]
+2 info using npm@3.10.3
+3 info using node@v6.4.0
+4 verbose run-script [ 'prewatch', 'watch', 'postwatch' ]
+5 info lifecycle container-kit@1.0.0~prewatch: container-kit@1.0.0
+6 silly lifecycle container-kit@1.0.0~prewatch: no script for prewatch, continuing
+7 info lifecycle container-kit@1.0.0~watch: container-kit@1.0.0
+8 verbose lifecycle container-kit@1.0.0~watch: unsafe-perm in lifecycle true
+9 verbose lifecycle container-kit@1.0.0~watch: PATH: /Users/nickkelly/.nvm/versions/node/v6.4.0/lib/node_modules/npm/bin/node-gyp-bin:/Users/nickkelly/Documents/Electron/electron-react/node_modules/.bin:/Users/nickkelly/.nvm/versions/node/v6.4.0/bin:/Users/nickkelly/.nvm/versions/node/v6.4.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/go/bin:/Users/nickkelly/google_appengine/:/usr/local/mysql/bin
+10 verbose lifecycle container-kit@1.0.0~watch: CWD: /Users/nickkelly/Documents/Electron/electron-react
+11 silly lifecycle container-kit@1.0.0~watch: Args: [ '-c', 'webpack-dev-server --port 8040' ]
+12 silly lifecycle container-kit@1.0.0~watch: Returned: code: 1  signal: null
+13 info lifecycle container-kit@1.0.0~watch: Failed to exec watch script
+14 verbose stack Error: container-kit@1.0.0 watch: `webpack-dev-server --port 8040`
+14 verbose stack Exit status 1
+14 verbose stack     at EventEmitter.<anonymous> (/Users/nickkelly/.nvm/versions/node/v6.4.0/lib/node_modules/npm/lib/utils/lifecycle.js:242:16)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at EventEmitter.emit (events.js:191:7)
+14 verbose stack     at ChildProcess.<anonymous> (/Users/nickkelly/.nvm/versions/node/v6.4.0/lib/node_modules/npm/lib/utils/spawn.js:40:14)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at ChildProcess.emit (events.js:191:7)
+14 verbose stack     at maybeClose (internal/child_process.js:852:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:215:5)
+15 verbose pkgid container-kit@1.0.0
+16 verbose cwd /Users/nickkelly/Documents/Electron/electron-react
+17 error Darwin 15.6.0
+18 error argv "/Users/nickkelly/.nvm/versions/node/v6.4.0/bin/node" "/Users/nickkelly/.nvm/versions/node/v6.4.0/bin/npm" "run" "watch"
+19 error node v6.4.0
+20 error npm  v3.10.3
+21 error code ELIFECYCLE
+22 error container-kit@1.0.0 watch: `webpack-dev-server --port 8040`
+22 error Exit status 1
+23 error Failed at the container-kit@1.0.0 watch script 'webpack-dev-server --port 8040'.
+23 error Make sure you have the latest version of node.js and npm installed.
+23 error If you do, this is most likely a problem with the container-kit package,
+23 error not with npm itself.
+23 error Tell the author that this fails on your system:
+23 error     webpack-dev-server --port 8040
+23 error You can get information on how to open an issue for this project with:
+23 error     npm bugs container-kit
+23 error Or if that isn't available, you can get their info via:
+23 error     npm owner ls container-kit
+23 error There is likely additional logging output above.
+24 verbose exit [ 1, true ]

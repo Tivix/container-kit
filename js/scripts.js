@@ -63,7 +63,6 @@ export const formatPorts = (portsArray) => {
       } // end switch
     } // endfor
 
-    console.log(portString)
     return portStringArray.join(', ')
   } // end if
 }

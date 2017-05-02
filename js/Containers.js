@@ -17,17 +17,16 @@ class Containers extends Component {
   }
 
   allContainers() {
-    var c = [],
-        self = this
-
-    var docker = initialize()
+    let c = [],
+        self = this,
+        docker = initialize()
 
     docker.listContainers({all: this.props.listAll}, (err, containers) => {
       containers.forEach((containerInfo) => {
-        var timeago = require('time-ago')()
-        var newDate = timeago.ago(new Date(containerInfo.Created * 1000))
-        var ports = formatPorts(containerInfo.Ports)
-        console.log(containerInfo)
+        let timeago = require('time-ago')(),
+            newDate = timeago.ago(new Date(containerInfo.Created * 1000)),
+            ports = formatPorts(containerInfo.Ports)
+
         c.push({
           id: containerInfo.Id.substring(0,11),
           image: containerInfo.Image,
@@ -44,7 +43,7 @@ class Containers extends Component {
 
   // change these two
   componentDidMount() {
-    var intervalId = setInterval(this.allContainers, 2000)
+    let intervalId = setInterval(this.allContainers, 2000)
     this.setState({intervalId: intervalId})
   }
 
