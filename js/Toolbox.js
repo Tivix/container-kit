@@ -3,13 +3,22 @@
 
 // import { ipcRenderer, dialog } from 'electron';
 
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Table, Button } from 'react-bootstrap';
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import { Button } from 'react-bootstrap'
+import {
+  Table,
+  TableBody,
+  TableFooter,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table'
 
 import bytes from 'bytes'
 
-import { initialize } from './scripts';
+import { initialize } from './scripts'
 
 
 class Toolbox extends Component {
@@ -35,46 +44,31 @@ class Toolbox extends Component {
   render() {
     return (
       <div>
-        <div className="table-responsive">
-          <Table responsive>
-            <thead>
-              <tr id="headerRow">
-                <th>
-                  <span>
-                    REPO:TAG
-                  </span>
-                </th>
-                <th>
-                  <span>
-                    IMAGE ID
-                  </span>
-                </th>
-                <th>
-                  <span>
-                    CREATED
-                  </span>
-                </th>
-                <th>
-                  <span>
-                    SIZE
-                  </span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                this.state.imageArray.map((image, i) => (
-                  <tr>
-                    <td>{image.id}</td>
-                    <td>{image.imageTag}</td>
-                    <td>{image.size}</td>
-                    <td>{image.created}</td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </Table>
-        </div>
+        <Table>
+          <TableHeader
+            displaySelectAll={false}
+            adjustForCheckbox={false}
+            enableSelectAll={false}>
+            <TableRow>
+              <TableHeaderColumn>REPO:TAG</TableHeaderColumn>
+              <TableHeaderColumn>IMAGE ID</TableHeaderColumn>
+              <TableHeaderColumn>CREATED</TableHeaderColumn>
+              <TableHeaderColumn>SIZE</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody displayRowCheckbox={false}>
+            {
+              this.state.imageArray.map( (image, index) => (
+                <TableRow key={index}>
+                  <TableRowColumn>{image.imageTag}</TableRowColumn>
+                  <TableRowColumn>{image.id}</TableRowColumn>
+                  <TableRowColumn>{image.size}</TableRowColumn>
+                  <TableRowColumn>{image.created}</TableRowColumn>
+                </TableRow>
+              ))
+            }
+          </TableBody>
+        </Table>
         <div>
           Total image disk space:
           <h2>{this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h2>
