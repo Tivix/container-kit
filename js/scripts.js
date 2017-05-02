@@ -1,22 +1,69 @@
 // scripts.js
 
 
-export const initialize = function() {
+export const initialize = () => {
   var Docker = require('../node_modules/dockerode/lib/docker')
   var fs     = require('fs');
 
-  var socket = process.env.DOCKER_SOCKET || '/var/run/docker.sock';
+  var socket = process.env.DOCKER_SOCKET || '/var/run/docker.sock'
   var stats  = fs.statSync(socket);
 
   if (!stats.isSocket()) {
-    throw new Error('Are you sure the docker is running?');
+    throw new Error('Are you sure the docker is running?')
   }
 
-  var docker = new Docker({ socketPath: socket });
+  var docker = new Docker({ socketPath: socket })
 
-  return docker;
+  return docker
 }
 
-export const formatPorts = () => {
-  
+
+export const formatPorts = (portsArray) => {
+  var portStringArray = []
+  var stringDict = {}
+
+  if (portsArray.length > 0) {
+    for (var i=0;i < portsArray.length;i++) {
+      switch(portsArray.length) {
+        case 1:
+          var privatePort = portsArray[i].PrivatePort
+          var type_ = portsArray[i].Type
+
+          return `${privatePort}/${type_}`
+          break
+
+        default:
+          var ip,
+              type_,
+              publicPort,
+              privatePort,
+              portString = ''
+
+          if(portsArray[i].hasOwnProperty("IP")) {
+            ip = portsArray[i].IP
+            portString += `${ip}`
+          }
+
+          if(portsArray[i].hasOwnProperty("PublicPort")) {
+            publicPort = portsArray[i].PublicPort
+            portString += `:${publicPort}`
+          }
+
+          if(portsArray[i].hasOwnProperty("PrivatePort")) {
+            privatePort = portsArray[i].PrivatePort
+            if(portsArray[i].hasOwnProperty("PublicPort")) portString += `->${privatePort}`
+            else portString += `${privatePort}`
+          }
+          if(portsArray[i].hasOwnProperty("Type")) {
+            type_ = portsArray[i].Type
+            portString += `/${type_}`
+          }
+          portStringArray.push(portString)
+          break
+      } // end switch
+    } // endfor
+
+    console.log(portString)
+    return portStringArray.join(', ')
+  } // end if
 }

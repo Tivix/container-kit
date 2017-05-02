@@ -1,53 +1,54 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 
-import { Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap'
 
-import { exec } from 'child_process';
-
-import { initialize } from './scripts';
+import { initialize, formatPorts } from './scripts'
 
 
 class Containers extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       containers: []
     };
-    this.allContainers = this.allContainers.bind(this);
+    this.allContainers = this.allContainers.bind(this)
   }
 
   allContainers() {
     var c = [],
-        self = this;
+        self = this
 
-    var docker = initialize();
+    var docker = initialize()
     docker.listContainers({all: this.props.listAll}, function(err, containers) {
       containers.forEach(function(containerInfo) {
-        var timeago = require('time-ago')();
-        var newDate = timeago.ago(new Date(containerInfo.Created * 1000));
-        console.log(containerInfo);
+        var timeago = require('time-ago')()
+        var newDate = timeago.ago(new Date(containerInfo.Created * 1000))
+        var ports = formatPorts(containerInfo.Ports)
+        console.log(containerInfo)
         c.push({
           id: containerInfo.Id.substring(0,11),
           image: containerInfo.Image,
           command: containerInfo.Command,
           created: newDate,
-          status: containerInfo.Status
-        });
-      });
+          status: containerInfo.Status,
+          ports: ports
+        })
+      })
 
-      self.setState({containers: c});
-    });
+      self.setState({containers: c})
+    })
   }
 
+  // change these two
   componentDidMount() {
-    var intervalId = setInterval(this.allContainers, 2000);
-    this.setState({intervalId: intervalId});
+    var intervalId = setInterval(this.allContainers, 2000)
+    this.setState({intervalId: intervalId})
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.intervalId);
+    clearInterval(this.state.intervalId)
   }
 
   render() {
@@ -57,21 +58,31 @@ class Containers extends Component {
           <thead>
             <tr id="headerRowAll">
               <th>
-                CONTAINER ID
+                <span>
+                  CONTAINER ID
+                </span>
               </th>
               <th>
-                IMAGE
+                <span>
+                  IMAGE
+                </span>
               </th>
               <th>
-                COMMAND
+                <span>
+                  COMMAND
+                </span>
               </th>
               <th>
-                CREATED
+                <span>
+                  CREATED
+                </span>
               </th>
               <th>
-                STATUS
+                <span>
+                  STATUS
+                </span>
               </th>
-              {this.props.listAll ? '' : <th>PORTS</th>}
+              {this.props.listAll ? '' : <th><span>PORTS</span></th>}
             </tr>
           </thead>
           <tbody>
@@ -83,6 +94,7 @@ class Containers extends Component {
                   <td>{container.command}</td>
                   <td>{container.created}</td>
                   <td>{container.status}</td>
+                  {this.props.listAll ? '' : <td>{container.ports}</td>}
                 </tr>
               ))
             }
