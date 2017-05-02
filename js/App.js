@@ -8,8 +8,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Tab, Tabs } from 'react-bootstrap';
 
-import RunningInstances from './RunningInstances';
-import AllInstances from './AllInstances';
+import Containers from './Containers';
 import Toolbox from './Toolbox';
 
 
@@ -33,8 +32,8 @@ class App extends Component {
         </div>
         <div>
           <Tabs activeKey={this.state.activeTab} onSelect={this.handleSelect} id="menu">
-            <Tab id="running" eventKey={1} title="Running Instances"><RunningInstances /></Tab>
-            <Tab id="all" eventKey={2} title="All Instances"><AllInstances /></Tab>
+            <Tab id="running" eventKey={1} title="Running Instances"><Containers listAll={false}/></Tab>
+            <Tab id="all" eventKey={2} title="All Instances"><Containers listAll={true}/></Tab>
             <Tab id="toolbox" eventKey={3} title="Toolbox"><Toolbox /></Tab>
           </Tabs>
         </div>

@@ -1,3 +1,3 @@
 # container-kit
 
-I'm learning Electron/React so decided to build a fun little container management application.
+Javascript training with Electron/React...fun little container management application.

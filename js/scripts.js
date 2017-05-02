@@ -1,4 +1,4 @@
-// script.js
+// scripts.js
 
 
 export const initialize = function() {
@@ -15,4 +15,8 @@ export const initialize = function() {
   var docker = new Docker({ socketPath: socket });
 
   return docker;
+}
+
+export const formatPorts = () => {
+  
 }
