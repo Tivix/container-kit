@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "watch": "webpack-dev-server --port 8040",
+    "build": "electron-packager . ContainerKit --overwrite --ignore=node_modules/electron-* && cp icon.icns ContainerKit-darwin-x64/ContainerKit.app/Contents/Resources/electron.icns",
     "electron-rebuild": "electron-rebuild"
   },
   "repository": {
@@ -24,6 +25,7 @@
     "css-loader": "0.28.0",
     "electron-packager": "8.6.0",
     "file-loader": "0.11.1",
+    "font-awesome": "4.7.0",
     "less": "2.7.2",
     "less-loader": "4.0.3",
     "node-libs-browser": "2.0.0",
@@ -41,6 +43,7 @@
     "react": "15.5.4",
     "react-bootstrap": "0.31.0",
     "react-dom": "15.5.4",
+    "react-fontawesome": "1.6.1",
     "time-ago": "0.1.0"
   }
 }
