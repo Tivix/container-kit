@@ -7,10 +7,12 @@ require('../less/main.less')
 
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Tab, Tabs, Row, Col, Nav, NavItem } from 'react-bootstrap'
 import FontAwesome from 'react-fontawesome'
 
+import {Tabs, Tab} from 'material-ui/Tabs'
+import {cyan500, blueA700, grey500} from 'material-ui/styles/colors'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import Containers from './Containers'
@@ -20,6 +22,23 @@ import Toolbox from './Toolbox'
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
+
+
+// This replaces the textColor value on the palette
+// and then update the keys for each component that depends on it.
+// More on Colors: http://www.material-ui.com/#/customization/colors
+const muiTheme = getMuiTheme({
+  palette: {
+    textColor: cyan500,
+    accent1Color: blueA700,
+    pickerHeaderColor: grey500,
+    primary1Color: grey500,
+    primary2Color: grey500
+  },
+  appBar: {
+    height: 50,
+  },
+});
 
 
 class App extends Component {
@@ -36,42 +55,20 @@ class App extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={muiTheme}>
         <div className="myDiv center">
           <div className="center">
             <img src={'../imgs/logo.png'} />
           </div>
           <div className="container">
-            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-              <Row className="clearfix">
-                <Col sm={12}>
-                  <Nav bsStyle="pills">
-                    <NavItem eventKey="first">
-                      <h4>Running Containers <FontAwesome name="ship" /></h4>
-                    </NavItem>
-                    <NavItem eventKey="second">
-                      <h4>All Containers <FontAwesome name="car" /></h4>
-                    </NavItem>
-                    <NavItem eventKey="third">
-                      <h4>Toolbox <FontAwesome name="info-circle" /></h4>
-                    </NavItem>
-                  </Nav>
-                </Col>
-                <Col sm={12}>
-                  <Tab.Content animation>
-                    <Tab.Pane eventKey="first">
-                      <Containers listAll={false}/>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="second">
-                      <Containers listAll={true}/>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="third">
-                      <Toolbox />
-                    </Tab.Pane>
-                  </Tab.Content>
-                </Col>
-              </Row>
-            </Tab.Container>
+            <Tabs>
+              <Tab icon={<FontAwesome name="ship" />} label="CONTAINERS">
+                <Containers />
+              </Tab>
+              <Tab icon={<FontAwesome name="info-circle" />} label="IMAGES">
+                <Toolbox />
+              </Tab>
+            </Tabs>
           </div>
         </div>
       </MuiThemeProvider>
