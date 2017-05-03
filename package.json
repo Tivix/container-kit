@@ -40,6 +40,7 @@
     "bytes": "2.5.0",
     "dockerode": "2.4.3",
     "electron-prebuilt": "1.4.13",
+    "hint.css": "2.5.0",
     "material-ui": "0.18.0",
     "react": "15.5.4",
     "react-dom": "15.5.4",

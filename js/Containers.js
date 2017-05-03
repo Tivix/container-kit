@@ -16,12 +16,23 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 
-import { initialize, formatPorts } from './scripts'
+import { initialize, formatPorts, removeContainer, stopContainer } from './scripts'
 
 
 const faStyle = {
   margin: 5
 }
+
+const hintStyle = {
+  zIndex: 99999999,
+  overflow: 'visible'
+}
+
+const tdStyle = {
+  paddingLeft: 15,
+  paddingRight: 15
+}
+
 
 class Containers extends Component {
 
@@ -32,7 +43,7 @@ class Containers extends Component {
       intervalId: null
     };
     this.allContainers = this.allContainers.bind(this)
-    this.removeContainer = this.removeContainer.bind(this)
+    //this.removeContainer = this.removeContainer.bind(this)
   }
 
 
@@ -81,31 +92,6 @@ class Containers extends Component {
     else return "not-running"
   }
 
-
-  /**
-   * removeContainer
-   * @param  {String}   containerId     Id of container
-   *
-   * Removes container by id
-   */
-  removeContainer(containerId) {
-    let docker = initialize()
-
-    docker.getContainer(containerId).remove()
-  }
-
-  /**
-   * stopContainer
-   * @param  {String}   containerId     Id of container
-   *
-   * Stops container by id
-   */
-  stopContainer(containerId) {
-    let docker = initialize()
-
-    docker.getContainer(containerId).stop()
-  }
-
   // change these two
   componentDidMount() {
     let intervalId = setInterval(this.allContainers, 2000)
@@ -138,13 +124,14 @@ class Containers extends Component {
             {
               this.state.containers.map( (container, index) => (
                 <TableRow key={index} className={this.isRunning(container.running)}>
-                  <TableRowColumn>{container.id}</TableRowColumn>
-                  <TableRowColumn>{container.image}</TableRowColumn>
-                  <TableRowColumn>{container.command}</TableRowColumn>
-                  <TableRowColumn>{container.created}</TableRowColumn>
-                  <TableRowColumn>{container.status}</TableRowColumn>
-                  <TableRowColumn>{container.ports}</TableRowColumn>
-                  <TableRowColumn>
+                  <TableRowColumn style={tdStyle}><span className="hint--top" style={hintStyle} aria-label={container.id}>{container.id}</span></TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.image}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.command}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.created}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.status}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.ports}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>
+                    {/* Need to figure out why these are auto firing...preventDefault for now */}
                     <FloatingActionButton
                       mini={true}
                       onTouchTap={(e) => {e.preventDefault(); this.removeContainer(container.id);}} style={faStyle} disabled={container.running}>
