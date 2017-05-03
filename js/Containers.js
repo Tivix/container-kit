@@ -1,5 +1,11 @@
+// Containers.js
+
+
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import FontAwesome from 'react-fontawesome'
+
+import FloatingActionButton from 'material-ui/FloatingActionButton'
 import {
   Table,
   TableBody,
@@ -13,6 +19,10 @@ import {
 import { initialize, formatPorts } from './scripts'
 
 
+const faStyle = {
+  margin: 5
+}
+
 class Containers extends Component {
 
   constructor(props) {
@@ -21,6 +31,7 @@ class Containers extends Component {
       containers: []
     };
     this.allContainers = this.allContainers.bind(this)
+    this.removeContainer = this.removeContainer.bind(this)
   }
 
   allContainers() {
@@ -58,6 +69,12 @@ class Containers extends Component {
     else return "not-running"
   }
 
+  removeContainer(containerId) {
+    let docker = initialize()
+
+    docker.getContainer(containerId).remove()
+  }
+
   // change these two
   componentDidMount() {
     let intervalId = setInterval(this.allContainers, 2000)
@@ -83,6 +100,7 @@ class Containers extends Component {
               <TableHeaderColumn>CREATED</TableHeaderColumn>
               <TableHeaderColumn>STATUS</TableHeaderColumn>
               <TableHeaderColumn>PORTS</TableHeaderColumn>
+              <TableHeaderColumn>OPTIONS</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
@@ -95,6 +113,14 @@ class Containers extends Component {
                   <TableRowColumn>{container.created}</TableRowColumn>
                   <TableRowColumn>{container.status}</TableRowColumn>
                   <TableRowColumn>{container.ports}</TableRowColumn>
+                  <TableRowColumn>
+                    <FloatingActionButton mini={true} onTouchTap={(e) => {e.preventDefault(); this.removeContainer(container.id);}} style={faStyle} disabled={container.running}>
+                      <FontAwesome name="trash" size="2x" />
+                    </FloatingActionButton>
+                    <FloatingActionButton mini={true} style={faStyle} disabled={!container.running}>
+                      <FontAwesome name="stop-circle-o" size="2x" />
+                    </FloatingActionButton>
+                  </TableRowColumn>
                 </TableRow>
               ))
             }

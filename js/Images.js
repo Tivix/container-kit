@@ -1,4 +1,4 @@
-// Toolbox.js
+// Images.js
 
 
 // import { ipcRenderer, dialog } from 'electron';
@@ -6,7 +6,8 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper'
+import RaisedButton from 'material-ui/RaisedButton'
 import {
   Table,
   TableBody,
@@ -26,8 +27,16 @@ const style = {
   margin: 12,
 };
 
+const paperStyle = {
+  height: 'auto',
+  width: '100%',
+  textAlign: 'center',
+  display: 'inline-block',
+  marginTop: '2em'
+};
 
-class Toolbox extends Component {
+
+class Images extends Component {
 
   constructor(props) {
     super(props);
@@ -38,13 +47,13 @@ class Toolbox extends Component {
       imageArray: []
     };
 
-    this.runToolbox = this.runToolbox.bind(this);
+    this.runImages = this.runImages.bind(this);
     this.removeAllImages = this.removeAllImages.bind(this);
   }
 
   componentDidMount() {
     console.log('mounted');
-    this.runToolbox();
+    this.runImages();
   }
 
   render() {
@@ -75,14 +84,11 @@ class Toolbox extends Component {
             }
           </TableBody>
         </Table>
-        <div>
+        <Paper style={paperStyle} zDepth={3}>
           Total image disk space:
           <h2>{this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h2>
-        </div>
-
-        <div className="well">
-          <RaisedButton id="remove-images-btn" label="Remove All Images" primary={true} style={style} />
-        </div>
+          <RaisedButton id="remove-images-btn" onTouchTap={this.removeAllImages} label="Remove All Images" primary={true} style={style} />
+        </Paper>
       </div>
     )
   }
@@ -94,7 +100,8 @@ class Toolbox extends Component {
           title: "errr",
           type: "warning",
           buttons: ['Stop/Remove', 'Cancel']
-        }
+        },
+        self = this
 
     const removeImagesBtn = document.getElementById('remove-images-btn')
     const dialog = require('electron').remote.dialog
@@ -111,7 +118,9 @@ class Toolbox extends Component {
 
             if(idx === array.length - 1) {
               //dialog.showMessageBox('Removing Images', errStrArray.join('\n\n'))
-              dialog.showMessageBox(messageOptions, () => { })
+              dialog.showMessageBox(messageOptions, (response) => {
+                //if(response === 0) self.stopRemoveContainers()
+              })
             }
           }
         })
@@ -119,7 +128,13 @@ class Toolbox extends Component {
     })
   }
 
-  runToolbox() {
+  stopRemoveContainers() {
+    let docker = initialize()
+
+    docker.listContainers()
+  }
+
+  runImages() {
 
     let docker = initialize(),
         imageArray = [],
@@ -159,4 +174,4 @@ class Toolbox extends Component {
   }
 }
 
-export default Toolbox
+export default Images
