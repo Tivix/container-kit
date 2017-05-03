@@ -66,3 +66,76 @@ export const formatPorts = (portsArray) => {
     return portStringArray.join(', ')
   } // end if
 }
+
+
+/**
+ * removeContainer
+ * @param  {String}   containerId     Id of container
+ *
+ * Removes container by id
+ */
+export const removeContainer = (containerId) => {
+  let docker = initialize()
+  docker.getContainer(containerId).remove()
+}
+
+/**
+ * stopContainer
+ * @param  {String}   containerId     Id of container
+ *
+ * Stops container by id
+ */
+export const stopContainer = (containerId) => {
+  let docker = initialize()
+  docker.getContainer(containerId).stop()
+}
+
+/**
+ * purge
+ *
+ * Stops/Removes all containers/images
+ */
+export const purge = () => {
+  let docker = initialize()
+  docker.listContainers({all: true})
+    .then( (containers) => {
+      containers.forEach( (containerInfo, index, array) => {
+        console.log("checking containers")
+        if(containerInfo.State === "running") {
+          docker.getContainer(containerInfo.Id).stop()
+            .then( (c) => {
+              return c.remove()
+            })
+            .then( (c) => {
+
+              if(index === array.length - 1) {
+                console.log("all containers removed")
+                docker.listImages({all: false}, (err, images) => {
+                  images.forEach((imageInfo, idx, arr) => {
+                    console.log("removing images")
+                    docker.getImage(imageInfo.Id).remove({force: true})
+                      .then( (img) => {
+                        console.log("deleted image")
+                        console.log(img)
+                      })
+                      .catch( (er) => {
+                        console.log(imageInfo.RepoTags[0])
+                        console.log(er)
+                      })
+                  })
+                })
+              }
+            })
+            .catch( (e) => {
+              console.log(e)
+            })
+        } else {
+          docker.getContainer(containerInfo.Id).remove()
+        }
+      })
+      console.log("removed all?")
+    })
+    .catch( (err) => {
+      pass
+    })
+}

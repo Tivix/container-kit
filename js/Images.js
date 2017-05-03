@@ -1,8 +1,6 @@
 // Images.js
 
 
-// import { ipcRenderer, dialog } from 'electron';
-
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
@@ -20,7 +18,12 @@ import {
 
 import bytes from 'bytes'
 
-import { initialize } from './scripts'
+import {
+  initialize,
+  removeContainer,
+  stopContainer,
+  purge
+} from './scripts'
 
 
 const style = {
@@ -42,13 +45,12 @@ class Images extends Component {
     super(props);
 
     this.state = {
-      total: '0 bytes',
+      total: '0B',
       errorMessage: '',
       imageArray: []
     };
 
     this.runImages = this.runImages.bind(this);
-    this.removeAllImages = this.removeAllImages.bind(this);
   }
 
   componentDidMount() {
@@ -77,60 +79,24 @@ class Images extends Component {
                 <TableRow key={index}>
                   <TableRowColumn>{image.imageTag}</TableRowColumn>
                   <TableRowColumn>{image.id}</TableRowColumn>
-                  <TableRowColumn>{image.size}</TableRowColumn>
                   <TableRowColumn>{image.created}</TableRowColumn>
+                  <TableRowColumn>{image.size}</TableRowColumn>
                 </TableRow>
               ))
             }
           </TableBody>
         </Table>
         <Paper style={paperStyle} zDepth={3}>
-          <h2>Total image disk space: {this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h2>
-          <RaisedButton id="remove-images-btn" onTouchTap={this.removeAllImages} label="Remove All Images" primary={true} style={style} />
+          <h1>Total image disk space: {this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h1>
+          <RaisedButton
+            id="remove-images-btn"
+            onTouchTap={purge}
+            label="Remove All Images"
+            primary={true}
+            style={style} />
         </Paper>
       </div>
     )
-  }
-
-
-  /**
-   * removeAllImages
-   *
-   * Remove all images if they are stopped/not running
-   */
-  removeAllImages() {
-    let docker = initialize(),
-        errStrArray = [],
-        messageOptions = {
-          title: "errr",
-          type: "warning",
-          buttons: ['Stop/Remove', 'Cancel']
-        },
-        self = this
-
-    const removeImagesBtn = document.getElementById('remove-images-btn')
-    const dialog = require('electron').remote.dialog
-
-    docker.listImages({all: true}, (err, images) => {
-      images.forEach((imageInfo, idx, array) => {
-        docker.getImage(imageInfo.Id).remove((er, img) => {
-          if(er) {
-
-            let splitStr = er.toString().split('-'),
-                s = splitStr[splitStr.length - 1]
-
-            if(!errStrArray.includes(s)) errStrArray.push(s)
-
-            if(idx === array.length - 1) {
-              //dialog.showMessageBox('Removing Images', errStrArray.join('\n\n'))
-              dialog.showMessageBox(messageOptions, (response) => {
-                //if(response === 0) self.stopRemoveContainers()
-              })
-            }
-          }
-        })
-      })
-    })
   }
 
 
