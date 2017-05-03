@@ -16,7 +16,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import Containers from './Containers'
-import Toolbox from './Toolbox'
+import Images from './Images'
 
 
 // Needed for onTouchTap
@@ -65,8 +65,8 @@ class App extends Component {
               <Tab icon={<FontAwesome name="ship" />} label="CONTAINERS">
                 <Containers />
               </Tab>
-              <Tab icon={<FontAwesome name="info-circle" />} label="IMAGES">
-                <Toolbox />
+              <Tab icon={<FontAwesome name="file-image-o" />} label="IMAGES">
+                <Images />
               </Tab>
             </Tabs>
           </div>

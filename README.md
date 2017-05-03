@@ -1,6 +1,6 @@
 # container-kit
 
-![alt text](https://media.giphy.com/media/14h6tL8OJmAuTm/giphy.gif "Container GIF")
+![](https://media.giphy.com/media/6AFldi5xJQYIo/giphy.gif)
 
 
 Javascript training with Electron/React...fun little container management application.
@@ -10,5 +10,3 @@ Javascript training with Electron/React...fun little container management applic
 That will create a folder `ContainerKit-{arch}-{cpu}` which contains `ContainerKit` application.
 
 *only compatible with OSX devices
-
-:whale::whale::whale::whale::whale::whale::whale:
