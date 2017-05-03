@@ -8,9 +8,10 @@ require('../less/main.less')
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import FontAwesome from 'react-fontawesome'
+import CircularProgress from 'material-ui/CircularProgress';
 
 import {Tabs, Tab} from 'material-ui/Tabs'
-import {cyan500, blueA700, grey500} from 'material-ui/styles/colors'
+import {cyan500, grey500} from 'material-ui/styles/colors'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import injectTapEventPlugin from 'react-tap-event-plugin'
@@ -30,7 +31,7 @@ injectTapEventPlugin();
 const muiTheme = getMuiTheme({
   palette: {
     textColor: cyan500,
-    accent1Color: blueA700,
+    accent1Color: '#212121',
     pickerHeaderColor: grey500,
     primary1Color: grey500,
     primary2Color: grey500
@@ -57,6 +58,7 @@ class App extends Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div className="myDiv center">
+          {/* <CircularProgress size={60} thickness={7} /> */}
           <div className="center">
             <img src={'../imgs/logo.png'} />
           </div>

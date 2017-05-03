@@ -3,7 +3,9 @@
 
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import FontAwesome from 'react-fontawesome'
 
+import FloatingActionButton from 'material-ui/FloatingActionButton'
 import Paper from 'material-ui/Paper'
 import RaisedButton from 'material-ui/RaisedButton'
 import {
@@ -22,13 +24,18 @@ import {
   initialize,
   removeContainer,
   stopContainer,
-  purge
+  purge,
+  removeImage
 } from './scripts'
 
 
 const style = {
   margin: 12,
 };
+
+const faStyle = {
+  margin: 5
+}
 
 const paperStyle = {
   height: 'auto',
@@ -37,6 +44,11 @@ const paperStyle = {
   display: 'inline-block',
   marginTop: '2em'
 };
+
+const tdStyle = {
+  paddingLeft: 15,
+  paddingRight: 15
+}
 
 
 class Images extends Component {
@@ -71,6 +83,7 @@ class Images extends Component {
               <TableHeaderColumn>IMAGE ID</TableHeaderColumn>
               <TableHeaderColumn>CREATED</TableHeaderColumn>
               <TableHeaderColumn>SIZE</TableHeaderColumn>
+              <TableHeaderColumn>OPTIONS</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
@@ -81,6 +94,15 @@ class Images extends Component {
                   <TableRowColumn>{image.id}</TableRowColumn>
                   <TableRowColumn>{image.created}</TableRowColumn>
                   <TableRowColumn>{image.size}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>
+                    {/* Need to figure out why these are auto firing...preventDefault for now */}
+                    <FloatingActionButton
+                      mini={true}
+                      style={faStyle}
+                      onTouchTap={(e) => { e.preventDefault(); removeImage(image.id);}}>
+                      <FontAwesome name="trash" size="2x" />
+                    </FloatingActionButton>
+                  </TableRowColumn>
                 </TableRow>
               ))
             }
@@ -88,12 +110,12 @@ class Images extends Component {
         </Table>
         <Paper style={paperStyle} zDepth={3}>
           <h1>Total image disk space: {this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h1>
-          <RaisedButton
+          {/* <RaisedButton
             id="remove-images-btn"
             onTouchTap={purge}
             label="Remove All Images"
             primary={true}
-            style={style} />
+            style={style} /> */}
         </Paper>
       </div>
     )

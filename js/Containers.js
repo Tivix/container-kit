@@ -124,7 +124,7 @@ class Containers extends Component {
             {
               this.state.containers.map( (container, index) => (
                 <TableRow key={index} className={this.isRunning(container.running)}>
-                  <TableRowColumn style={tdStyle}><span className="hint--top" style={hintStyle} aria-label={container.id}>{container.id}</span></TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.id}</TableRowColumn>
                   <TableRowColumn style={tdStyle}>{container.image}</TableRowColumn>
                   <TableRowColumn style={tdStyle}>{container.command}</TableRowColumn>
                   <TableRowColumn style={tdStyle}>{container.created}</TableRowColumn>
@@ -134,12 +134,12 @@ class Containers extends Component {
                     {/* Need to figure out why these are auto firing...preventDefault for now */}
                     <FloatingActionButton
                       mini={true}
-                      onTouchTap={(e) => {e.preventDefault(); this.removeContainer(container.id);}} style={faStyle} disabled={container.running}>
+                      onTouchTap={(e) => {e.preventDefault(); removeContainer(container.id);}} style={faStyle} disabled={container.running}>
                       <FontAwesome name="trash" size="2x" />
                     </FloatingActionButton>
                     <FloatingActionButton
                       mini={true}
-                      onTouchTap={(e) => {e.preventDefault(); this.stopContainer(container.id);}} style={faStyle} disabled={!container.running}>
+                      onTouchTap={(e) => {e.preventDefault(); stopContainer(container.id);}} style={faStyle} disabled={!container.running}>
                       <FontAwesome name="stop-circle-o" size="2x" />
                     </FloatingActionButton>
                   </TableRowColumn>
