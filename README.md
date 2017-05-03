@@ -1,6 +1,6 @@
 # container-kit
 
-![](https://media.giphy.com/media/14h6tL8OJmAuTm/giphy.gif)
+![](http://media.giphy.com/media/14h6tL8OJmAuTm/giphy.gif)
 
 
 Javascript training with Electron/React...fun little container management application.
