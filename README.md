@@ -1,6 +1,6 @@
 # container-kit
 
-![alt text](https://media.giphy.com/media/14h6tL8OJmAuTm/giphy.gif "Container GIF")
+![](https://media.giphy.com/media/14h6tL8OJmAuTm/giphy.gif)
 
 
 Javascript training with Electron/React...fun little container management application.
