@@ -52,8 +52,8 @@ class Images extends Component {
   }
 
   componentDidMount() {
-    console.log('mounted');
-    this.runImages();
+    let intervalId = setInterval(this.runImages, 2000)
+    this.setState({intervalId: intervalId})
   }
 
   render() {
@@ -85,14 +85,19 @@ class Images extends Component {
           </TableBody>
         </Table>
         <Paper style={paperStyle} zDepth={3}>
-          Total image disk space:
-          <h2>{this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h2>
+          <h2>Total image disk space: {this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h2>
           <RaisedButton id="remove-images-btn" onTouchTap={this.removeAllImages} label="Remove All Images" primary={true} style={style} />
         </Paper>
       </div>
     )
   }
 
+
+  /**
+   * removeAllImages
+   *
+   * Remove all images if they are stopped/not running
+   */
   removeAllImages() {
     let docker = initialize(),
         errStrArray = [],
@@ -128,12 +133,12 @@ class Images extends Component {
     })
   }
 
-  stopRemoveContainers() {
-    let docker = initialize()
 
-    docker.listContainers()
-  }
-
+  /**
+   * runImages
+   *
+   * get detail of images and list them
+   */
   runImages() {
 
     let docker = initialize(),
@@ -145,7 +150,6 @@ class Images extends Component {
       .then((images) => {
         images.forEach((imageInfo) => {
           if (imageInfo.RepoTags && imageInfo.RepoTags.length > 0 && imageInfo.RepoTags[0].toString() !== '<none>:<none>') {
-            console.log(imageInfo)
             let ta = require('time-ago')(),
                 newDate = ta.ago(new Date(imageInfo.Created * 1000))
 
@@ -159,7 +163,6 @@ class Images extends Component {
             self.setState({imageArray:imageArray})
           }
           totalBytes = totalBytes + imageInfo.Size;
-          console.log(imageInfo.Size);
         })
 
         self.setState({
