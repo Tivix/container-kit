@@ -10,8 +10,9 @@ import ReactDOM from 'react-dom'
 import FontAwesome from 'react-fontawesome'
 
 import {Tabs, Tab} from 'material-ui/Tabs'
-
+import {cyan500, blueA700, grey500} from 'material-ui/styles/colors'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import Containers from './Containers'
@@ -21,6 +22,23 @@ import Toolbox from './Toolbox'
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
+
+
+// This replaces the textColor value on the palette
+// and then update the keys for each component that depends on it.
+// More on Colors: http://www.material-ui.com/#/customization/colors
+const muiTheme = getMuiTheme({
+  palette: {
+    textColor: cyan500,
+    accent1Color: blueA700,
+    pickerHeaderColor: grey500,
+    primary1Color: grey500,
+    primary2Color: grey500
+  },
+  appBar: {
+    height: 50,
+  },
+});
 
 
 class App extends Component {
@@ -37,18 +55,15 @@ class App extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={muiTheme}>
         <div className="myDiv center">
           <div className="center">
             <img src={'../imgs/logo.png'} />
           </div>
           <div className="container">
             <Tabs>
-              <Tab icon={<FontAwesome name="ship" />} label="Running Containers">
-                <Containers listAll={false}/>
-              </Tab>
-              <Tab icon={<FontAwesome name="car" />} label="All Containers">
-                <Containers listAll={true}/>
+              <Tab icon={<FontAwesome name="ship" />} label="CONTAINERS">
+                <Containers />
               </Tab>
               <Tab icon={<FontAwesome name="info-circle" />} label="IMAGES">
                 <Toolbox />

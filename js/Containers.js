@@ -28,24 +28,34 @@ class Containers extends Component {
         self = this,
         docker = initialize()
 
-    docker.listContainers({all: this.props.listAll}, (err, containers) => {
+    docker.listContainers({all: true}, (err, containers) => {
       containers.forEach((containerInfo) => {
         let timeago = require('time-ago')(),
             newDate = timeago.ago(new Date(containerInfo.Created * 1000)),
-            ports = formatPorts(containerInfo.Ports)
+            ports = formatPorts(containerInfo.Ports),
+            running = false
 
+        if(containerInfo.State === 'running') running = true
+
+        console.log(containerInfo)
         c.push({
           id: containerInfo.Id.substring(0,11),
           image: containerInfo.Image,
           command: containerInfo.Command,
           created: newDate,
           status: containerInfo.Status,
-          ports: ports
+          ports: ports,
+          running: running
         })
       })
 
       self.setState({containers: c})
     })
+  }
+
+  isRunning(run) {
+    if(run) return "running"
+    else return "not-running"
   }
 
   // change these two
@@ -72,19 +82,19 @@ class Containers extends Component {
               <TableHeaderColumn>COMMAND</TableHeaderColumn>
               <TableHeaderColumn>CREATED</TableHeaderColumn>
               <TableHeaderColumn>STATUS</TableHeaderColumn>
-              {this.props.listAll ? '' : <TableHeaderColumn>PORTS</TableHeaderColumn>}
+              <TableHeaderColumn>PORTS</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
             {
               this.state.containers.map( (container, index) => (
-                <TableRow key={index}>
+                <TableRow key={index} className={this.isRunning(container.running)}>
                   <TableRowColumn>{container.id}</TableRowColumn>
                   <TableRowColumn>{container.image}</TableRowColumn>
                   <TableRowColumn>{container.command}</TableRowColumn>
                   <TableRowColumn>{container.created}</TableRowColumn>
                   <TableRowColumn>{container.status}</TableRowColumn>
-                  {this.props.listAll ? '' : <TableRowColumn>{container.ports}</TableRowColumn>}
+                  <TableRowColumn>{container.ports}</TableRowColumn>
                 </TableRow>
               ))
             }
