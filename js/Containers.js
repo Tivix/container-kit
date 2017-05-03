@@ -89,10 +89,21 @@ class Containers extends Component {
    * Removes container by id
    */
   removeContainer(containerId) {
-    console.log(typeof containerId)
     let docker = initialize()
 
     docker.getContainer(containerId).remove()
+  }
+
+  /**
+   * stopContainer
+   * @param  {String}   containerId     Id of container
+   *
+   * Stops container by id
+   */
+  stopContainer(containerId) {
+    let docker = initialize()
+
+    docker.getContainer(containerId).stop()
   }
 
   // change these two
@@ -134,10 +145,14 @@ class Containers extends Component {
                   <TableRowColumn>{container.status}</TableRowColumn>
                   <TableRowColumn>{container.ports}</TableRowColumn>
                   <TableRowColumn>
-                    <FloatingActionButton mini={true} onTouchTap={(e) => {e.preventDefault(); this.removeContainer(container.id);}} style={faStyle} disabled={container.running}>
+                    <FloatingActionButton
+                      mini={true}
+                      onTouchTap={(e) => {e.preventDefault(); this.removeContainer(container.id);}} style={faStyle} disabled={container.running}>
                       <FontAwesome name="trash" size="2x" />
                     </FloatingActionButton>
-                    <FloatingActionButton mini={true} style={faStyle} disabled={!container.running}>
+                    <FloatingActionButton
+                      mini={true}
+                      onTouchTap={(e) => {e.preventDefault(); this.stopContainer(container.id);}} style={faStyle} disabled={!container.running}>
                       <FontAwesome name="stop-circle-o" size="2x" />
                     </FloatingActionButton>
                   </TableRowColumn>
