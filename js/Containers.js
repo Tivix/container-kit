@@ -28,12 +28,19 @@ class Containers extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      containers: []
+      containers: [],
+      intervalId: null
     };
     this.allContainers = this.allContainers.bind(this)
     this.removeContainer = this.removeContainer.bind(this)
   }
 
+
+  /**
+   * allContainers
+   *
+   * List all running/stopped containers
+   */
   allContainers() {
     let c = [],
         self = this,
@@ -48,7 +55,6 @@ class Containers extends Component {
 
         if(containerInfo.State === 'running') running = true
 
-        console.log(containerInfo)
         c.push({
           id: containerInfo.Id.substring(0,11),
           image: containerInfo.Image,
@@ -64,12 +70,26 @@ class Containers extends Component {
     })
   }
 
+
+  /**
+   * isRunning
+   * @param  {Boolean}   run     Container running or not
+   * @return  {String}           Css class for red/green left row border
+   */
   isRunning(run) {
     if(run) return "running"
     else return "not-running"
   }
 
+
+  /**
+   * removeContainer
+   * @param  {String}   containerId     Id of container
+   *
+   * Removes container by id
+   */
   removeContainer(containerId) {
+    console.log(typeof containerId)
     let docker = initialize()
 
     docker.getContainer(containerId).remove()
