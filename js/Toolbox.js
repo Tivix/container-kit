@@ -5,7 +5,8 @@
 
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Button } from 'react-bootstrap'
+
+import RaisedButton from 'material-ui/RaisedButton';
 import {
   Table,
   TableBody,
@@ -19,6 +20,11 @@ import {
 import bytes from 'bytes'
 
 import { initialize } from './scripts'
+
+
+const style = {
+  margin: 12,
+};
 
 
 class Toolbox extends Component {
@@ -75,7 +81,7 @@ class Toolbox extends Component {
         </div>
 
         <div className="well">
-          <Button id="remove-images-btn" onClick={this.removeAllImages} bsStyle="primary" bsSize="large" block>Remove All Images</Button>
+          <RaisedButton id="remove-images-btn" label="Remove All Images" primary={true} style={style} />
         </div>
       </div>
     )

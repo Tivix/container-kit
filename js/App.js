@@ -7,8 +7,9 @@ require('../less/main.less')
 
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Tab, Tabs, Row, Col, Nav, NavItem } from 'react-bootstrap'
 import FontAwesome from 'react-fontawesome'
+
+import {Tabs, Tab} from 'material-ui/Tabs'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import injectTapEventPlugin from 'react-tap-event-plugin'
@@ -42,36 +43,17 @@ class App extends Component {
             <img src={'../imgs/logo.png'} />
           </div>
           <div className="container">
-            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-              <Row className="clearfix">
-                <Col sm={12}>
-                  <Nav bsStyle="pills">
-                    <NavItem eventKey="first">
-                      <h4>Running Containers <FontAwesome name="ship" /></h4>
-                    </NavItem>
-                    <NavItem eventKey="second">
-                      <h4>All Containers <FontAwesome name="car" /></h4>
-                    </NavItem>
-                    <NavItem eventKey="third">
-                      <h4>Toolbox <FontAwesome name="info-circle" /></h4>
-                    </NavItem>
-                  </Nav>
-                </Col>
-                <Col sm={12}>
-                  <Tab.Content animation>
-                    <Tab.Pane eventKey="first">
-                      <Containers listAll={false}/>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="second">
-                      <Containers listAll={true}/>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="third">
-                      <Toolbox />
-                    </Tab.Pane>
-                  </Tab.Content>
-                </Col>
-              </Row>
-            </Tab.Container>
+            <Tabs>
+              <Tab icon={<FontAwesome name="ship" />} label="Running Containers">
+                <Containers listAll={false}/>
+              </Tab>
+              <Tab icon={<FontAwesome name="car" />} label="All Containers">
+                <Containers listAll={true}/>
+              </Tab>
+              <Tab icon={<FontAwesome name="info-circle" />} label="IMAGES">
+                <Toolbox />
+              </Tab>
+            </Tabs>
           </div>
         </div>
       </MuiThemeProvider>
