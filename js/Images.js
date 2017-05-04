@@ -39,6 +39,10 @@ const faStyle = {
   margin: 5
 }
 
+const marginTp = {
+  marginTop: '3em'
+}
+
 const circleStyle = {
   display: 'none'
 }
@@ -117,11 +121,22 @@ class Images extends Component {
             }
           </TableBody>
         </Table>
+        {this.emptyCheck()}
         <Paper style={paperStyle} zDepth={3}>
           <h1>Total image disk space: {this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h1>
         </Paper>
       </div>
     )
+  }
+
+  emptyCheck() {
+    if(this.state.imageArray.length === 0) {
+      return (
+        <div className="center" style={marginTp}>
+          <FontAwesome name="battery-quarter" size="4x" />
+        </div>
+      )
+    }
   }
 
   deleteButton(iid) {

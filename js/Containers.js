@@ -37,6 +37,10 @@ const circleStyle = {
   display: 'none'
 }
 
+const marginTp = {
+  marginTop: '3em'
+}
+
 
 class Containers extends Component {
 
@@ -94,6 +98,16 @@ class Containers extends Component {
   isRunning(run) {
     if(run) return "running"
     else return "not-running"
+  }
+
+  emptyCheck() {
+    if(this.state.containers.length === 0) {
+      return (
+        <div className="center" style={marginTp}>
+          <FontAwesome name="battery-quarter" size="4x" />
+        </div>
+      )
+    }
   }
 
   // change these two
@@ -155,6 +169,7 @@ class Containers extends Component {
             }
           </TableBody>
         </Table>
+        {this.emptyCheck()}
       </div>
     );
   }

@@ -100,6 +100,7 @@ export const toggleLoad = (tf) => {
  * Removes image by id
  */
 export const removeImage = (imageId) => {
+  console.log(this)
   let docker = initialize()
   docker.getImage(imageId).remove()
     .then( (image) => {
