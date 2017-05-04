@@ -5,12 +5,13 @@ require('../less/main.less')
 
 'use strict';
 
+
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import FontAwesome from 'react-fontawesome'
 
 import {Tabs, Tab} from 'material-ui/Tabs'
-import {cyan500, blueA700, grey500} from 'material-ui/styles/colors'
+import {cyan500, grey500} from 'material-ui/styles/colors'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import injectTapEventPlugin from 'react-tap-event-plugin'
@@ -30,7 +31,7 @@ injectTapEventPlugin();
 const muiTheme = getMuiTheme({
   palette: {
     textColor: cyan500,
-    accent1Color: blueA700,
+    accent1Color: '#212121',
     pickerHeaderColor: grey500,
     primary1Color: grey500,
     primary2Color: grey500
@@ -60,16 +61,14 @@ class App extends Component {
           <div className="center">
             <img src={'../imgs/logo.png'} />
           </div>
-          <div className="container">
-            <Tabs>
-              <Tab icon={<FontAwesome name="ship" />} label="CONTAINERS">
-                <Containers />
-              </Tab>
-              <Tab icon={<FontAwesome name="file-image-o" />} label="IMAGES">
-                <Images />
-              </Tab>
-            </Tabs>
-          </div>
+          <Tabs>
+            <Tab icon={<FontAwesome name="ship" />} label="CONTAINERS">
+              <Containers />
+            </Tab>
+            <Tab icon={<FontAwesome name="file-image-o" />} label="IMAGES">
+              <Images />
+            </Tab>
+          </Tabs>
         </div>
       </MuiThemeProvider>
     );

@@ -16,7 +16,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 
-import { initialize, formatPorts, removeContainer, stopContainer } from './scripts'
+import { initialize, formatPorts, removeContainer, stopContainer, SET_INTERVAL_TIME } from './scripts'
 
 
 const faStyle = {
@@ -31,6 +31,14 @@ const hintStyle = {
 const tdStyle = {
   paddingLeft: 15,
   paddingRight: 15
+}
+
+const circleStyle = {
+  display: 'none'
+}
+
+const marginTp = {
+  marginTop: '3em'
 }
 
 
@@ -92,9 +100,19 @@ class Containers extends Component {
     else return "not-running"
   }
 
+  emptyCheck() {
+    if(this.state.containers.length === 0) {
+      return (
+        <div className="center" style={marginTp}>
+          <FontAwesome name="battery-quarter" size="4x" />
+        </div>
+      )
+    }
+  }
+
   // change these two
   componentDidMount() {
-    let intervalId = setInterval(this.allContainers, 2000)
+    let intervalId = setInterval(this.allContainers, SET_INTERVAL_TIME)
     this.setState({intervalId: intervalId})
   }
 
@@ -124,7 +142,7 @@ class Containers extends Component {
             {
               this.state.containers.map( (container, index) => (
                 <TableRow key={index} className={this.isRunning(container.running)}>
-                  <TableRowColumn style={tdStyle}><span className="hint--top" style={hintStyle} aria-label={container.id}>{container.id}</span></TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.id}</TableRowColumn>
                   <TableRowColumn style={tdStyle}>{container.image}</TableRowColumn>
                   <TableRowColumn style={tdStyle}>{container.command}</TableRowColumn>
                   <TableRowColumn style={tdStyle}>{container.created}</TableRowColumn>
@@ -133,21 +151,25 @@ class Containers extends Component {
                   <TableRowColumn style={tdStyle}>
                     {/* Need to figure out why these are auto firing...preventDefault for now */}
                     <FloatingActionButton
+                      id={container.id+"-delete-button"}
                       mini={true}
-                      onTouchTap={(e) => {e.preventDefault(); this.removeContainer(container.id);}} style={faStyle} disabled={container.running}>
+                      onTouchTap={(e) => {e.preventDefault(); removeContainer(container.id);}} style={faStyle} disabled={container.running}>
                       <FontAwesome name="trash" size="2x" />
                     </FloatingActionButton>
                     <FloatingActionButton
+                      id={container.id+"-stop-button"}
                       mini={true}
-                      onTouchTap={(e) => {e.preventDefault(); this.stopContainer(container.id);}} style={faStyle} disabled={!container.running}>
+                      onTouchTap={(e) => {e.preventDefault(); stopContainer(container.id);}} style={faStyle} disabled={!container.running}>
                       <FontAwesome name="stop-circle-o" size="2x" />
                     </FloatingActionButton>
+                    <FontAwesome id={container.id+"-circle-progress"} style={circleStyle} className="fa-pulse" size="3x" name="spinner" spin />
                   </TableRowColumn>
                 </TableRow>
               ))
             }
           </TableBody>
         </Table>
+        {this.emptyCheck()}
       </div>
     );
   }
