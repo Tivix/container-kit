@@ -87,6 +87,12 @@ export const showBox = (title, message) => {
 }
 
 
+export const toggleLoad = (tf) => {
+  document.getElementById(imageId+"-circle-progress").style.display = tf ? "inline-block" : "none"
+  document.getElementById(imageId+'-delete-button').disabled = tf
+}
+
+
 /**
  * removeImage
  * @param  {String}   imageId     Id of image

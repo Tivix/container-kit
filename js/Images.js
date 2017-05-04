@@ -119,12 +119,6 @@ class Images extends Component {
         </Table>
         <Paper style={paperStyle} zDepth={3}>
           <h1>Total image disk space: {this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h1>
-          {/* <RaisedButton
-            id="remove-images-btn"
-            onTouchTap={purge}
-            label="Remove All Images"
-            primary={true}
-            style={style} /> */}
         </Paper>
       </div>
     )
@@ -170,6 +164,7 @@ class Images extends Component {
         self.setState({
           total: bytes(totalBytes),
           errorMessage: '',
+          imageArray: imageArray
         })
       }, (err) => {
         self.setState({
