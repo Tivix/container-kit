@@ -16,7 +16,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 
-import { initialize, formatPorts, removeContainer, stopContainer } from './scripts'
+import { initialize, formatPorts, removeContainer, stopContainer, SET_INTERVAL_TIME } from './scripts'
 
 
 const faStyle = {
@@ -31,6 +31,10 @@ const hintStyle = {
 const tdStyle = {
   paddingLeft: 15,
   paddingRight: 15
+}
+
+const circleStyle = {
+  display: 'none'
 }
 
 
@@ -94,7 +98,7 @@ class Containers extends Component {
 
   // change these two
   componentDidMount() {
-    let intervalId = setInterval(this.allContainers, 2000)
+    let intervalId = setInterval(this.allContainers, SET_INTERVAL_TIME)
     this.setState({intervalId: intervalId})
   }
 
@@ -133,15 +137,18 @@ class Containers extends Component {
                   <TableRowColumn style={tdStyle}>
                     {/* Need to figure out why these are auto firing...preventDefault for now */}
                     <FloatingActionButton
+                      id={container.id+"-delete-button"}
                       mini={true}
                       onTouchTap={(e) => {e.preventDefault(); removeContainer(container.id);}} style={faStyle} disabled={container.running}>
                       <FontAwesome name="trash" size="2x" />
                     </FloatingActionButton>
                     <FloatingActionButton
+                      id={container.id+"-stop-button"}
                       mini={true}
                       onTouchTap={(e) => {e.preventDefault(); stopContainer(container.id);}} style={faStyle} disabled={!container.running}>
                       <FontAwesome name="stop-circle-o" size="2x" />
                     </FloatingActionButton>
+                    <FontAwesome id={container.id+"-circle-progress"} style={circleStyle} className="fa-pulse" size="3x" name="spinner" spin />
                   </TableRowColumn>
                 </TableRow>
               ))

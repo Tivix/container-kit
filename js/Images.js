@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import FontAwesome from 'react-fontawesome'
 
+import CircularProgress from 'material-ui/CircularProgress';
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import Paper from 'material-ui/Paper'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -25,7 +26,8 @@ import {
   removeContainer,
   stopContainer,
   purge,
-  removeImage
+  removeImage,
+  SET_INTERVAL_TIME
 } from './scripts'
 
 
@@ -35,6 +37,10 @@ const style = {
 
 const faStyle = {
   margin: 5
+}
+
+const circleStyle = {
+  display: 'none'
 }
 
 const paperStyle = {
@@ -63,10 +69,11 @@ class Images extends Component {
     };
 
     this.runImages = this.runImages.bind(this);
+    this.deleteButton = this.deleteButton.bind(this);
   }
 
   componentDidMount() {
-    let intervalId = setInterval(this.runImages, 2000)
+    let intervalId = setInterval(this.runImages, SET_INTERVAL_TIME)
     this.setState({intervalId: intervalId})
   }
 
@@ -97,11 +104,13 @@ class Images extends Component {
                   <TableRowColumn style={tdStyle}>
                     {/* Need to figure out why these are auto firing...preventDefault for now */}
                     <FloatingActionButton
+                      id={image.id+"-delete-button"}
                       mini={true}
                       style={faStyle}
-                      onTouchTap={(e) => { e.preventDefault(); removeImage(image.id);}}>
+                      onTouchTap={ (e) => { e.preventDefault(); this.deleteButton(image.id);}}>
                       <FontAwesome name="trash" size="2x" />
                     </FloatingActionButton>
+                    <FontAwesome id={image.id+"-circle-progress"} style={circleStyle} className="fa-pulse" size="3x" name="spinner" spin />
                   </TableRowColumn>
                 </TableRow>
               ))
@@ -121,6 +130,11 @@ class Images extends Component {
     )
   }
 
+  deleteButton(iid) {
+    document.getElementById(iid+'-delete-button').disabled = true
+    document.getElementById(iid+'-circle-progress').style.display = 'inline-block'
+    removeImage(iid)
+  }
 
   /**
    * runImages

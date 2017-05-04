@@ -1,6 +1,12 @@
 // scripts.js
 
 
+
+// static vars
+export const SET_INTERVAL_TIME = 1000
+
+
+// Helpers
 export const initialize = () => {
   var Docker = require('../node_modules/dockerode/lib/docker')
   var fs     = require('fs');
@@ -89,15 +95,18 @@ export const showBox = (title, message) => {
  */
 export const removeImage = (imageId) => {
   let docker = initialize()
-
   docker.getImage(imageId).remove()
     .then( (image) => {
       console.log("image removed");
-      showBox("Image Removed", "Successfully")
+      document.getElementById(imageId+"-circle-progress").style.display = "none";
+      document.getElementById(imageId+'-delete-button').disabled = false
+      //showBox("Image Removed", "Successfully")
     })
     .catch( (er) => {
       console.log(er);
-      showBox("Image Removed", "Unsuccessfully")
+      document.getElementById(imageId+"-circle-progress").style.display = "none";
+      document.getElementById(imageId+'-delete-button').disabled = false
+      //showBox("Image Removed", "Unsuccessfully")
     })
 }
 
@@ -109,8 +118,14 @@ export const removeImage = (imageId) => {
  * Removes container by id
  */
 export const removeContainer = (containerId) => {
+  document.getElementById(containerId+'-delete-button').disabled = true
+  document.getElementById(containerId+'-circle-progress').style.display = 'inline-block'
   let docker = initialize()
   docker.getContainer(containerId).remove()
+    .then( (c) => {
+      document.getElementById(containerId+'-delete-button').disabled = false
+      document.getElementById(containerId+'-circle-progress').style.display = 'none'
+    })
 }
 
 /**
@@ -120,8 +135,14 @@ export const removeContainer = (containerId) => {
  * Stops container by id
  */
 export const stopContainer = (containerId) => {
+  document.getElementById(containerId+'-stop-button').disabled = true
+  document.getElementById(containerId+'-circle-progress').style.display = 'inline-block'
   let docker = initialize()
   docker.getContainer(containerId).stop()
+    .then( (c) => {
+      document.getElementById(containerId+'-stop-button').disabled = false
+      document.getElementById(containerId+'-circle-progress').style.display = 'none'
+    })
 }
 
 /**

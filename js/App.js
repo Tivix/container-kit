@@ -5,10 +5,10 @@ require('../less/main.less')
 
 'use strict';
 
+
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import FontAwesome from 'react-fontawesome'
-import CircularProgress from 'material-ui/CircularProgress';
 
 import {Tabs, Tab} from 'material-ui/Tabs'
 import {cyan500, grey500} from 'material-ui/styles/colors'
@@ -58,20 +58,17 @@ class App extends Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div className="myDiv center">
-          {/* <CircularProgress size={60} thickness={7} /> */}
           <div className="center">
             <img src={'../imgs/logo.png'} />
           </div>
-          <div className="container">
-            <Tabs>
-              <Tab icon={<FontAwesome name="ship" />} label="CONTAINERS">
-                <Containers />
-              </Tab>
-              <Tab icon={<FontAwesome name="file-image-o" />} label="IMAGES">
-                <Images />
-              </Tab>
-            </Tabs>
-          </div>
+          <Tabs>
+            <Tab icon={<FontAwesome name="ship" />} label="CONTAINERS">
+              <Containers />
+            </Tab>
+            <Tab icon={<FontAwesome name="file-image-o" />} label="IMAGES">
+              <Images />
+            </Tab>
+          </Tabs>
         </div>
       </MuiThemeProvider>
     );
