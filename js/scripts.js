@@ -113,7 +113,7 @@ export const removeImage = (imageId) => {
       console.log(er);
       document.getElementById(imageId+"-circle-progress").style.display = "none";
       document.getElementById(imageId+'-delete-button').disabled = false
-      //showBox("Image Removed", "Unsuccessfully")
+      showBox("Error", "Container is either in use, or not removed.")
     })
 }
 

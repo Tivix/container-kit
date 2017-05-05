@@ -5,7 +5,8 @@
 
 Javascript training with Electron/React...fun little container management application.
 
-    git clone git@github.com:nickatnight/container-kit.git . && cd $_
+    git clone git@github.com:nickatnight/container-kit.git
+    cd container-kit
     npm install
 
 
