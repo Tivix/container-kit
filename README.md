@@ -3,7 +3,7 @@
 ![](https://media.giphy.com/media/6AFldi5xJQYIo/giphy.gif)
 
 
-    git clone git@github.com:nickatnight/container-kit.git
+    git clone git@github.com:Tivix/container-kit.git
     cd container-kit
     npm install
 
