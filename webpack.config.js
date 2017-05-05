@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    app: ['webpack/hot/dev-server', './js/App.js'],
+    app: ['webpack/hot/dev-server', './src/js/App.js'],
   },
   output: {
     path: path.resolve(__dirname, 'public/built'),

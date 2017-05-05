@@ -3,8 +3,6 @@
 ![](https://media.giphy.com/media/6AFldi5xJQYIo/giphy.gif)
 
 
-Javascript training with Electron/React...fun little container management application.
-
     git clone git@github.com:nickatnight/container-kit.git
     cd container-kit
     npm install

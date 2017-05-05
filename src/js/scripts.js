@@ -8,7 +8,7 @@ export const SET_INTERVAL_TIME = 1000
 
 // Helpers
 export const initialize = () => {
-  var Docker = require('../node_modules/dockerode/lib/docker')
+  var Docker = require('../../node_modules/dockerode/lib/docker')
   var fs     = require('fs');
 
   var socket = process.env.DOCKER_SOCKET || '/var/run/docker.sock'
