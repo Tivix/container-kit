@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=dev electron .",
     "watch": "webpack-dev-server --port 8040",
-    "build": "NODE_ENV=prod electron-packager . ContainerKit --overwrite --ignore=node_modules/electron-* && cp icon.icns ContainerKit-darwin-x64/ContainerKit.app/Contents/Resources/electron.icns",
+    "build": "webpack -p && electron-packager . ContainerKit --overwrite --ignore=node_modules/electron-* && cp icon.icns ContainerKit-darwin-x64/ContainerKit.app/Contents/Resources/electron.icns",
     "electron-rebuild": "electron-rebuild"
   },
   "repository": {
