@@ -1,3 +1,4 @@
 node_modules/
 ContainerKit-*
 npm-debug.log
+built/

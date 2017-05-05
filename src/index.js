@@ -14,15 +14,17 @@ function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({width: 900, height: 500, frame: false})
 
+  let environment = process.env.NODE_ENV
+  let indexHTML = (environment === 'dev') ? 'index.dev.html' : 'index.html'
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+    pathname: path.join(__dirname, indexHTML),
     protocol: 'file:',
     slashes: true
   }))
 
   // Open the DevTools only if dev environment.
-  if(process.env.NODE_ENV === 'dev') win.webContents.openDevTools()
+  if(environment === 'dev') win.webContents.openDevTools()
 
 
   // Emitted when the window is closed.

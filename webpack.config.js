@@ -7,12 +7,12 @@ module.exports = {
     app: ['webpack/hot/dev-server', './src/js/App.js'],
   },
   output: {
-    path: path.resolve(__dirname, 'public/built'),
+    path: path.resolve(__dirname, './src/built'),
     filename: 'bundle.js',
     publicPath: 'http://localhost:8040/built/'
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'public'),
+    contentBase: path.resolve(__dirname, './src'),
     publicPath: 'http://localhost:8040/built/'
   },
   resolve: {
