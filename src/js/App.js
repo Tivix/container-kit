@@ -1,5 +1,5 @@
-require('../node_modules/bootstrap/less/bootstrap.less')
-require('../node_modules/font-awesome/less/font-awesome.less')
+require('../../node_modules/bootstrap/less/bootstrap.less')
+require('../../node_modules/font-awesome/less/font-awesome.less')
 require('../less/main.less')
 
 
@@ -59,7 +59,7 @@ class App extends Component {
       <MuiThemeProvider muiTheme={muiTheme}>
         <div className="myDiv center">
           <div className="center">
-            <img src={'../imgs/logo.png'} />
+            <img src={'../src/imgs/logo.png'} />
           </div>
           <Tabs>
             <Tab icon={<FontAwesome name="ship" />} label="CONTAINERS">
@@ -84,6 +84,6 @@ class App extends Component {
 }
 
 ReactDOM.render(
-  <App activeTab={1} />,
+  <App />,
   document.getElementById('root')
 );

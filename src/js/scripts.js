@@ -8,7 +8,7 @@ export const SET_INTERVAL_TIME = 1000
 
 // Helpers
 export const initialize = () => {
-  var Docker = require('../node_modules/dockerode/lib/docker')
+  var Docker = require('../../node_modules/dockerode/lib/docker')
   var fs     = require('fs');
 
   var socket = process.env.DOCKER_SOCKET || '/var/run/docker.sock'
@@ -113,7 +113,7 @@ export const removeImage = (imageId) => {
       console.log(er);
       document.getElementById(imageId+"-circle-progress").style.display = "none";
       document.getElementById(imageId+'-delete-button').disabled = false
-      //showBox("Image Removed", "Unsuccessfully")
+      showBox("Error", "Container is either in use, or not removed.")
     })
 }
 
