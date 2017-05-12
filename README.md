@@ -22,6 +22,10 @@ Run each command in separate terminal:
 
 That will create a folder `ContainerKit-{arch}-{cpu}` which contains `ContainerKit` application.
 
+<img src="docs/containers.png" alt="Drawing" style="width: 75%; height: 75%;"/>
+
+<img src="docs/images.png" alt="Drawing" style="width: 75%; height: 75%;"/>
+
 *only compatible with OSX devices for app use
 
 :whale::whale::whale::whale::whale::whale::whale::whale::whale::whale::whale::whale::whale:
