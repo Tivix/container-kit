@@ -45,7 +45,10 @@
     "react": "15.5.4",
     "react-dom": "15.5.4",
     "react-fontawesome": "1.6.1",
+    "react-redux": "5.0.4",
     "react-tap-event-plugin": "2.0.1",
+    "redux": "3.6.0",
+    "redux-thunk": "2.2.0",
     "time-ago": "0.1.0"
   }
 }
