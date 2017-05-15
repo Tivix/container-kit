@@ -9,10 +9,6 @@ import rootReducer from './reducers';
 import App from './components/App';
 
 
-const initialState = {
-  dockerContainers: []
-};
-
 const middleware = applyMiddleware(thunk);
 
 const store = createStore(

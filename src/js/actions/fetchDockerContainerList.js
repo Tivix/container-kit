@@ -1,3 +1,6 @@
+// fetchDockerContainerList.js
+
+
 import loadDockerContainerList from '../actions/loadDockerContainerList';
 
 
@@ -28,21 +31,11 @@ export default function() {
           })
         })
         console.log('getting list')
-        dispatch(loadDockerContainerList(c))
-        // return {
-        //   type: "FETCH_DOCKER_CONTAINER_LIST",
-        //   data: c
-        // }
+        dispatch(loadDockerContainerList(c));
       })
       .catch( (err) => {
         pass;
       });
-
-    //return c
-    return {
-      type: "FETCH_DOCKER_CONTAINER_LIST",
-      data: c
-    }
   }
 }
 

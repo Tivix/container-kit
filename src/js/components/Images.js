@@ -1,5 +1,6 @@
 // Images.js
 
+import PropTypes from 'prop-types';
 
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
@@ -21,15 +22,11 @@ import {
 
 import bytes from 'bytes'
 
-import {
-  initialize,
-  removeContainer,
-  stopContainer,
-  purge,
-  removeImage,
-  SET_INTERVAL_TIME
-} from './scripts'
 
+const defaultProps = {
+  dockerImages: [],
+  fetchDockerImageList() {}
+};
 
 const style = {
   margin: 12,
@@ -66,19 +63,16 @@ class Images extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      total: '0B',
-      errorMessage: '',
-      imageArray: []
-    };
+    this.state = { };
 
-    this.runImages = this.runImages.bind(this);
-    this.deleteButton = this.deleteButton.bind(this);
+    // this.runImages = this.runImages.bind(this);
+    // this.deleteButton = this.deleteButton.bind(this);
   }
 
   componentDidMount() {
-    let intervalId = setInterval(this.runImages, SET_INTERVAL_TIME)
-    this.setState({intervalId: intervalId})
+    setInterval(this.props.fetchDockerImageList(), 1000);
+    //let intervalId = setInterval(this.allContainers, SET_INTERVAL_TIME)
+    //this.setState({intervalId: intervalId})
   }
 
   render() {
@@ -99,7 +93,7 @@ class Images extends Component {
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
             {
-              this.state.imageArray.map( (image, index) => (
+              this.props.dockerImages.map( (image, index) => (
                 <TableRow key={index}>
                   <TableRowColumn>{image.imageTag}</TableRowColumn>
                   <TableRowColumn>{image.id}</TableRowColumn>
@@ -121,7 +115,7 @@ class Images extends Component {
             }
           </TableBody>
         </Table>
-        {this.emptyCheck()}
+        {/* {this.emptyCheck()} */}
         <Paper style={paperStyle} zDepth={3}>
           <h1>Total image disk space: {this.state.errorMessage === '' ? this.state.total : this.state.errorMessage}</h1>
         </Paper>
@@ -129,15 +123,15 @@ class Images extends Component {
     )
   }
 
-  emptyCheck() {
-    if(this.state.imageArray.length === 0) {
-      return (
-        <div className="center" style={marginTp}>
-          <FontAwesome name="battery-quarter" size="4x" />
-        </div>
-      )
-    }
-  }
+  // emptyCheck() {
+  //   if(this.state.imageArray.length === 0) {
+  //     return (
+  //       <div className="center" style={marginTp}>
+  //         <FontAwesome name="battery-quarter" size="4x" />
+  //       </div>
+  //     )
+  //   }
+  // }
 
   deleteButton(iid) {
     document.getElementById(iid+'-delete-button').disabled = true
@@ -145,48 +139,13 @@ class Images extends Component {
     removeImage(iid)
   }
 
-  /**
-   * runImages
-   *
-   * get detail of images and list them
-   */
-  runImages() {
-
-    let docker = initialize(),
-        imageArray = [],
-        totalBytes = 0,
-        self = this
-
-    docker.listImages({all: true})
-      .then((images) => {
-        images.forEach((imageInfo) => {
-          if (imageInfo.RepoTags && imageInfo.RepoTags.length > 0 && imageInfo.RepoTags[0].toString() !== '<none>:<none>') {
-            let ta = require('time-ago')(),
-                newDate = ta.ago(new Date(imageInfo.Created * 1000))
-
-            imageArray.push({
-              created: newDate,
-              imageTag: imageInfo.RepoTags[0],
-              size: bytes(imageInfo.Size),
-              id: imageInfo.Id.split(':')[1].substring(0,11)
-            })
-
-            self.setState({imageArray:imageArray})
-          }
-          totalBytes = totalBytes + imageInfo.Size;
-        })
-
-        self.setState({
-          total: bytes(totalBytes),
-          errorMessage: '',
-          imageArray: imageArray
-        })
-      }, (err) => {
-        self.setState({
-          errorMessage: err.message,
-        })
-      })
-  }
 }
+
+Images.propTypes = {
+  dockerImages: PropTypes.array.isRequired,
+  fetchDockerImageList: PropTypes.func.isRequired
+};
+
+Images.defaultProps = defaultProps;
 
 export default Images

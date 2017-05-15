@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import fetchDockerContainerList from '../actions/fetchDockerContainerList';
+import fetchDockerImageList from '../actions/fetchDockerImageList';
 
-import Containers from '../components/Containers';
+import Images from '../components/Images';
 
 
 const mapStateToProps = (state) => {
   return {
-    dockerContainers: state.dockerContainers.data
+    dockerImages: state.dockerImages.data
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({fetchDockerContainerList}, dispatch);
+  return bindActionCreators({fetchDockerImageList}, dispatch);
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Containers);
+)(Images);

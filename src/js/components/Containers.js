@@ -1,6 +1,8 @@
 // Containers.js
 
 
+import PropTypes from 'prop-types';
+
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import FontAwesome from 'react-fontawesome'
@@ -16,8 +18,11 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 
-import { initialize, formatPorts, removeContainer, stopContainer, SET_INTERVAL_TIME } from './scripts'
 
+const defaultProps = {
+  dockerContainers: [],
+  fetchDockerContainerList() {}
+};
 
 const faStyle = {
   margin: 5
@@ -45,13 +50,9 @@ const marginTp = {
 class Containers extends Component {
 
   constructor(props) {
-    super(props)
-    this.state = {
-      containers: [],
-      intervalId: null
-    };
-    this.allContainers = this.allContainers.bind(this)
-    //this.removeContainer = this.removeContainer.bind(this)
+    super(props);
+
+    //this.state = { };
   }
 
 
@@ -65,21 +66,22 @@ class Containers extends Component {
     else return "not-running"
   }
 
-  emptyCheck() {
-    if(this.state.containers.length === 0) {
-      return (
-        <div className="center" style={marginTp}>
-          <FontAwesome name="battery-quarter" size="4x" />
-        </div>
-      )
-    }
-  }
+  // emptyCheck() {
+  //   if(this.state.containers.length === 0) {
+  //     return (
+  //       <div className="center" style={marginTp}>
+  //         <FontAwesome name="battery-quarter" size="4x" />
+  //       </div>
+  //     )
+  //   }
+  // }
 
   // // change these two
-  // componentDidMount() {
-  //   let intervalId = setInterval(this.allContainers, SET_INTERVAL_TIME)
-  //   this.setState({intervalId: intervalId})
-  // }
+  componentDidMount() {
+    setInterval(this.props.fetchDockerContainerList(), 1000);
+    //let intervalId = setInterval(this.allContainers, SET_INTERVAL_TIME)
+    //this.setState({intervalId: intervalId})
+  }
   //
   // componentWillUnmount() {
   //   clearInterval(this.state.intervalId)
@@ -104,34 +106,40 @@ class Containers extends Component {
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
-            
+
             {
-              // this.state.containers.map( (container, index) => (
-              //   <TableRow key={index} className={this.isRunning(container.running)}>
-              //     <TableRowColumn style={tdStyle}>{container.id}</TableRowColumn>
-              //     <TableRowColumn style={tdStyle}>{container.image}</TableRowColumn>
-              //     <TableRowColumn style={tdStyle}>{container.command}</TableRowColumn>
-              //     <TableRowColumn style={tdStyle}>{container.created}</TableRowColumn>
-              //     <TableRowColumn style={tdStyle}>{container.status}</TableRowColumn>
-              //     <TableRowColumn style={tdStyle}>{container.ports}</TableRowColumn>
-              //     <TableRowColumn style={tdStyle}>
-              //       <FloatingActionButton>
-              //         <FontAwesome name="trash" size="2x" />
-              //       </FloatingActionButton>
-              //       <FloatingActionButton>
-              //         <FontAwesome name="stop-circle-o" size="2x" />
-              //       </FloatingActionButton>
-              //       <FontAwesome id={container.id+"-circle-progress"} style={circleStyle} className="fa-pulse" size="3x" name="spinner" spin />
-              //     </TableRowColumn>
-              //   </TableRow>
-              // ))
+              this.props.dockerContainers.map( (container, index) => (
+                <TableRow key={index} className={this.isRunning(container.running)}>
+                  <TableRowColumn style={tdStyle}>{container.id}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.image}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.command}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.created}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.status}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>{container.ports}</TableRowColumn>
+                  <TableRowColumn style={tdStyle}>
+                    <FloatingActionButton>
+                      <FontAwesome name="trash" size="2x" />
+                    </FloatingActionButton>
+                    <FloatingActionButton>
+                      <FontAwesome name="stop-circle-o" size="2x" />
+                    </FloatingActionButton>
+                    <FontAwesome id={container.id+"-circle-progress"} style={circleStyle} className="fa-pulse" size="3x" name="spinner" spin />
+                  </TableRowColumn>
+                </TableRow>
+              ))
             }
           </TableBody>
         </Table>
-        {this.emptyCheck()}
       </div>
     );
   }
 }
+
+Containers.propTypes = {
+  dockerContainers: PropTypes.array.isRequired,
+  fetchDockerContainerList: PropTypes.func.isRequired
+};
+
+Containers.defaultProps = defaultProps;
 
 export default Containers;

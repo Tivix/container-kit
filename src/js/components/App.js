@@ -15,9 +15,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
-//import Containers from './Containers'
-//import Images from './Images'
 import DockerContainerList from '../containers/DockerContainerList';
+import DockerImageList from '../containers/DockerImageList';
 
 
 // Needed for onTouchTap
@@ -56,15 +55,21 @@ class App extends Component {
 
   render() {
     return (
+      <MuiThemeProvider muiTheme={muiTheme}>
         <div className="myDiv center">
           <div className="center">
             <img src={'../src/imgs/logo.png'} />
           </div>
-          <div>
-            <h2>Conainter List</h2>
-            <DockerContainerList updateInterval={1000} />
-          </div>
+          <Tabs>
+            <Tab icon={<FontAwesome name="ship" />} label="CONTAINERS">
+              <DockerContainerList />
+            </Tab>
+            <Tab icon={<FontAwesome name="file-image-o" />} label="IMAGES">
+              <DockerImageList />
+            </Tab>
+          </Tabs>
         </div>
+      </MuiThemeProvider>
     );
   }
 
