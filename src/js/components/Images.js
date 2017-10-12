@@ -63,10 +63,16 @@ class Images extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { };
+    this.state = {
+      //totalBytes,
+    };
 
-    // this.runImages = this.runImages.bind(this);
+    this.getTotalBytes = this.getTotalBytes.bind(this);
     // this.deleteButton = this.deleteButton.bind(this);
+  }
+
+  getTotalBytes() {
+    //this.setState({totalBytes: this.props.dockerImages.length()});
   }
 
   componentDidMount() {
@@ -74,6 +80,7 @@ class Images extends Component {
     //let intervalId = setInterval(this.allContainers, SET_INTERVAL_TIME)
     //this.setState({intervalId: intervalId})
   }
+
 
   render() {
     return (

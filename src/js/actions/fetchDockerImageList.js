@@ -3,24 +3,10 @@
 
 import bytes from 'bytes'
 
+import { initialize } from '../utils/scripts';
+
 import loadDockerImageList from '../actions/loadDockerImageList';
-
-// Helpers
-export const initialize = () => {
-  var Docker = require('../../../node_modules/dockerode/lib/docker')
-  var fs     = require('fs');
-
-  var socket = process.env.DOCKER_SOCKET || '/var/run/docker.sock'
-  var stats  = fs.statSync(socket);
-
-  if (!stats.isSocket()) {
-    throw new Error('Are you sure the docker is running?')
-  }
-
-  var docker = new Docker({ socketPath: socket })
-
-  return docker
-}
+import setTotalBytes from '../actions/setTotalBytes';
 
 
 export default function() {
@@ -28,8 +14,7 @@ export default function() {
 
     let docker = initialize(),
         imageArray = [],
-        totalBytes = 0,
-        self = this
+        self = this;
 
     docker.listImages({all: true})
       .then((images) => {
@@ -47,11 +32,9 @@ export default function() {
 
             //self.setState({imageArray:imageArray})
           }
-          totalBytes = totalBytes + imageInfo.Size;
         })
         console.log(imageArray);
         dispatch(loadDockerImageList(imageArray));
-
         // self.setState({
         //   total: bytes(totalBytes),
         //   errorMessage: '',

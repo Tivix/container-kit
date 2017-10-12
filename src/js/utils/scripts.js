@@ -1,77 +1,27 @@
-// // scripts.js
-//
-//
-// // static vars
-// export const SET_INTERVAL_TIME = 1000
-//
-//
-// // Helpers
-// export const initialize = () => {
-//   var Docker = require('../../node_modules/dockerode/lib/docker')
-//   var fs     = require('fs');
-//
-//   var socket = process.env.DOCKER_SOCKET || '/var/run/docker.sock'
-//   var stats  = fs.statSync(socket);
-//
-//   if (!stats.isSocket()) {
-//     throw new Error('Are you sure the docker is running?')
-//   }
-//
-//   var docker = new Docker({ socketPath: socket })
-//
-//   return docker
-// }
-//
-//
-// export const formatPorts = (portsArray) => {
-//   var portStringArray = []
-//   var stringDict = {}
-//
-//   if (portsArray.length > 0) {
-//     for (var i=0;i < portsArray.length;i++) {
-//       switch(portsArray.length) {
-//         case 1:
-//           var privatePort = portsArray[i].PrivatePort
-//           var type_ = portsArray[i].Type
-//
-//           return `${privatePort}/${type_}`
-//           break
-//
-//         default:
-//           var ip,
-//               type_,
-//               publicPort,
-//               privatePort,
-//               portString = ''
-//
-//           if(portsArray[i].hasOwnProperty("IP")) {
-//             ip = portsArray[i].IP
-//             portString += `${ip}`
-//           }
-//
-//           if(portsArray[i].hasOwnProperty("PublicPort")) {
-//             publicPort = portsArray[i].PublicPort
-//             portString += `:${publicPort}`
-//           }
-//
-//           if(portsArray[i].hasOwnProperty("PrivatePort")) {
-//             privatePort = portsArray[i].PrivatePort
-//             if(portsArray[i].hasOwnProperty("PublicPort")) portString += `->${privatePort}`
-//             else portString += `${privatePort}`
-//           }
-//           if(portsArray[i].hasOwnProperty("Type")) {
-//             type_ = portsArray[i].Type
-//             portString += `/${type_}`
-//           }
-//           portStringArray.push(portString)
-//           break
-//       } // end switch
-//     } // endfor
-//
-//     return portStringArray.join(', ')
-//   } // end if
-// }
-//
+// scripts.js
+
+
+export const initialize = () => {
+  var Docker = require('../../../node_modules/dockerode/lib/docker')
+  var fs     = require('fs');
+
+  var socket = process.env.DOCKER_SOCKET || '/var/run/docker.sock'
+  var stats  = fs.statSync(socket);
+
+  if (!stats.isSocket()) {
+    throw new Error('Are you sure the docker is running?')
+  }
+
+  var docker = new Docker({ socketPath: socket })
+
+  return docker
+}
+
+
+// static vars
+export const SET_INTERVAL_TIME = 1000
+
+
 // /**
 //  * showBox
 //  * @param  {String}   title     Title of message box
@@ -86,10 +36,6 @@
 // }
 //
 //
-// export const toggleLoad = (tf) => {
-//   document.getElementById(imageId+"-circle-progress").style.display = tf ? "inline-block" : "none"
-//   document.getElementById(imageId+'-delete-button').disabled = tf
-// }
 //
 //
 // /**
@@ -116,23 +62,6 @@
 //     })
 // }
 //
-//
-// /**
-//  * removeContainer
-//  * @param  {String}   containerId     Id of container
-//  *
-//  * Removes container by id
-//  */
-// export const removeContainer = (containerId) => {
-//   document.getElementById(containerId+'-delete-button').disabled = true
-//   document.getElementById(containerId+'-circle-progress').style.display = 'inline-block'
-//   let docker = initialize()
-//   docker.getContainer(containerId).remove()
-//     .then( (c) => {
-//       document.getElementById(containerId+'-delete-button').disabled = false
-//       document.getElementById(containerId+'-circle-progress').style.display = 'none'
-//     })
-// }
 //
 // /**
 //  * stopContainer

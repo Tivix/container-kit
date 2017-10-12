@@ -1,7 +1,11 @@
+// DockerContainerList.js
+
+
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import { deleteContainer } from '../actions/deleteContainer';
 import fetchDockerContainerList from '../actions/fetchDockerContainerList';
 
 import Containers from '../components/Containers';
@@ -14,7 +18,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({fetchDockerContainerList}, dispatch);
+  return bindActionCreators({fetchDockerContainerList, deleteContainer}, dispatch);
 };
 
 export default connect(

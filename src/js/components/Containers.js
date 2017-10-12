@@ -21,7 +21,8 @@ import {
 
 const defaultProps = {
   dockerContainers: [],
-  fetchDockerContainerList() {}
+  fetchDockerContainerList() {},
+  deleteContainer() {}
 };
 
 const faStyle = {
@@ -52,7 +53,9 @@ class Containers extends Component {
   constructor(props) {
     super(props);
 
-    //this.state = { };
+    this.state = { };
+
+    //this.fetchDockerContainerList = this.props.fetchDockerContainerList.bind(this);
   }
 
 
@@ -76,16 +79,14 @@ class Containers extends Component {
   //   }
   // }
 
-  // // change these two
   componentDidMount() {
-    setInterval(this.props.fetchDockerContainerList(), 1000);
-    //let intervalId = setInterval(this.allContainers, SET_INTERVAL_TIME)
+    let intervalId = setInterval(this.props.fetchDockerContainerList(), 1000);
     //this.setState({intervalId: intervalId})
   }
-  //
-  // componentWillUnmount() {
-  //   clearInterval(this.state.intervalId)
-  // }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId)
+  }
 
   render() {
     return (
@@ -106,7 +107,6 @@ class Containers extends Component {
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
-
             {
               this.props.dockerContainers.map( (container, index) => (
                 <TableRow key={index} className={this.isRunning(container.running)}>
@@ -117,10 +117,16 @@ class Containers extends Component {
                   <TableRowColumn style={tdStyle}>{container.status}</TableRowColumn>
                   <TableRowColumn style={tdStyle}>{container.ports}</TableRowColumn>
                   <TableRowColumn style={tdStyle}>
-                    <FloatingActionButton>
+                    <FloatingActionButton
+                      disabled={container.running}
+                      mini={true}
+                      onTouchTap={(e) => {e.preventDefault(); console.log('pressed delete button for', container.id); this.props.deleteContainer(container.id);}}
+                      style={faStyle}>
                       <FontAwesome name="trash" size="2x" />
                     </FloatingActionButton>
-                    <FloatingActionButton>
+                    <FloatingActionButton
+                      disabled={!container.running}
+                      mini={true}>
                       <FontAwesome name="stop-circle-o" size="2x" />
                     </FloatingActionButton>
                     <FontAwesome id={container.id+"-circle-progress"} style={circleStyle} className="fa-pulse" size="3x" name="spinner" spin />
@@ -137,7 +143,8 @@ class Containers extends Component {
 
 Containers.propTypes = {
   dockerContainers: PropTypes.array.isRequired,
-  fetchDockerContainerList: PropTypes.func.isRequired
+  fetchDockerContainerList: PropTypes.func.isRequired,
+  deleteContainer: PropTypes.func.isRequired
 };
 
 Containers.defaultProps = defaultProps;

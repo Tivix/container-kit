@@ -1,12 +1,12 @@
 // fetchDockerContainerList.js
 
-
+import { initialize } from '../utils/scripts';
 import loadDockerContainerList from '../actions/loadDockerContainerList';
 
 
-export default function() {
+export default () => {
   return (dispatch) => {
-    console.log('entered fecth')
+    console.log('entered fetch')
     let c = [],
         docker = initialize()
 
@@ -16,9 +16,9 @@ export default function() {
           let timeago = require('time-ago')(),
               newDate = timeago.ago(new Date(containerInfo.Created * 1000)),
               ports = formatPorts(containerInfo.Ports),
-              running = false
+              running = false;
 
-          if(containerInfo.State === 'running') running = true
+          if(containerInfo.State === 'running') running = true;
 
           c.push({
             id: containerInfo.Id.substring(0,11),
@@ -30,30 +30,13 @@ export default function() {
             running: running
           })
         })
-        console.log('getting list')
+        console.log('getting list');
         dispatch(loadDockerContainerList(c));
       })
       .catch( (err) => {
-        pass;
+        console.log('failed getting list');
       });
   }
-}
-
-// Helpers
-export const initialize = () => {
-  var Docker = require('../../../node_modules/dockerode/lib/docker')
-  var fs     = require('fs');
-
-  var socket = process.env.DOCKER_SOCKET || '/var/run/docker.sock'
-  var stats  = fs.statSync(socket);
-
-  if (!stats.isSocket()) {
-    throw new Error('Are you sure the docker is running?')
-  }
-
-  var docker = new Docker({ socketPath: socket })
-
-  return docker
 }
 
 export const formatPorts = (portsArray) => {
